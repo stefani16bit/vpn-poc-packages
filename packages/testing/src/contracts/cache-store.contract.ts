@@ -1,27 +1,9 @@
-/**
- * The behaviour every ICacheStore adapter must exhibit.
- *
- * Why a shared suite instead of per-adapter tests: the value of a port is that
- * the caller cannot tell which adapter it got. That claim is only true if both
- * adapters are held to the same assertions - and the ones that drift are always
- * the edge cases nobody wrote twice (expiry, increment on a missing key,
- * delete-the-absent).
- *
- * Usage, from an adapter's own spec file:
- *
- *   describeCacheStoreContract('RedisCacheStore', async () => {
- *     const clock = new FixedClock();
- *     return { store: new RedisCacheStore(client, clock), clock };
- *   });
- */
-
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import type { ICacheStore } from '@vpn/ports';
 
 export interface CacheStoreHarness {
 	readonly store: ICacheStore;
-	/** Moves the adapter's notion of time forward. */
 	advance(seconds: number): Promise<void> | void;
 }
 
@@ -55,8 +37,6 @@ export function describeCacheStoreContract(
 			await expect(store.get(key)).resolves.toBe('second');
 		});
 
-		// The isolation guarantee the structured key exists to provide. If this
-		// fails, one account can read another's cached data.
 		it('keeps entries with the same namespace and id but different owners apart', async () => {
 			await store.set({ owner: 'account-1', namespace: 'n', id: 'i' }, 'one', 60);
 			await store.set({ owner: 'account-2', namespace: 'n', id: 'i' }, 'two', 60);
@@ -118,9 +98,6 @@ export function describeCacheStoreContract(
 			await expect(store.increment(key, 60)).resolves.toBe(3);
 		});
 
-		// The whole point of a rate limit: the window has to end even while the
-		// caller keeps hitting it. An adapter that refreshes the TTL on every
-		// increment produces a limiter that never resets under sustained load.
 		it('does not extend the window when incrementing an existing counter', async () => {
 			await store.increment(key, 10);
 			await harness.advance(6);

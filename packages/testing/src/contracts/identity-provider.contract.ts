@@ -1,12 +1,3 @@
-/**
- * The behaviour every IIdentityProvider adapter must exhibit.
- *
- * The session-family assertions are the reason this suite exists. Rotation and
- * reuse detection are easy to implement almost-correctly - reject the replayed
- * token but keep the family alive - and the almost-correct version is
- * indistinguishable from the correct one until someone's token is stolen.
- */
-
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import type { IIdentityProvider } from '@vpn/ports';
@@ -32,8 +23,8 @@ export function describeIdentityProviderContract(
 			provider = harness.provider;
 		});
 
-		async function registered(email = EMAIL) {
-			const outcome = await provider.register(email, PASSWORD);
+		async function registered(email = EMAIL, locale = 'pt-BR') {
+			const outcome = await provider.register(email, PASSWORD, locale);
 			if (outcome.kind !== 'registered') throw new Error('setup: registration failed');
 			return outcome.account;
 		}
@@ -45,14 +36,22 @@ export function describeIdentityProviderContract(
 				expect(account.emailVerifiedAt).toBeNull();
 			});
 
+			it('persists the locale it was registered with', async () => {
+				const account = await registered('grace@example.com', 'en');
+				expect(account.locale).toBe('en');
+				expect((await provider.findById(account.id))?.locale).toBe('en');
+			});
+
 			it('reports a duplicate address rather than throwing', async () => {
 				await registered();
-				await expect(provider.register(EMAIL, PASSWORD)).resolves.toEqual({ kind: 'email_taken' });
+				await expect(provider.register(EMAIL, PASSWORD, 'pt-BR')).resolves.toEqual({
+					kind: 'email_taken',
+				});
 			});
 
 			it('treats addresses differing only in case as the same account', async () => {
 				await registered();
-				await expect(provider.register('ADA@Example.com', PASSWORD)).resolves.toEqual({
+				await expect(provider.register('ADA@Example.com', PASSWORD, 'pt-BR')).resolves.toEqual({
 					kind: 'email_taken',
 				});
 			});
@@ -66,8 +65,6 @@ export function describeIdentityProviderContract(
 				});
 			});
 
-			// The two assertions below are one requirement: the caller must not be
-			// able to tell an unknown account from a wrong password.
 			it('returns null for a wrong password', async () => {
 				await registered();
 				await expect(provider.authenticate(EMAIL, 'wrong-password-entirely')).resolves.toBeNull();
@@ -118,9 +115,6 @@ export function describeIdentityProviderContract(
 				expect(replay.kind).toBe('reuse_detected');
 			});
 
-			// The assertion that separates a correct implementation from a
-			// plausible one. After a replay, the token the thief did NOT use must
-			// also stop working.
 			it('kills the whole family when reuse is detected', async () => {
 				const account = await registered();
 				const session = await provider.startSession(account.id);
@@ -201,6 +195,21 @@ export function describeIdentityProviderContract(
 		});
 
 		describe('account state', () => {
+			it('changes the locale', async () => {
+				const account = await registered(EMAIL, 'pt-BR');
+				await provider.setLocale(account.id, 'en');
+				expect((await provider.findById(account.id))?.locale).toBe('en');
+			});
+
+			it('leaves another account untouched when changing a locale', async () => {
+				const mine = await registered(EMAIL, 'pt-BR');
+				const theirs = await registered('grace@example.com', 'pt-BR');
+
+				await provider.setLocale(mine.id, 'en');
+
+				expect((await provider.findById(theirs.id))?.locale).toBe('pt-BR');
+			});
+
 			it('marks the e-mail verified', async () => {
 				const account = await registered();
 				await provider.markEmailVerified(account.id);
@@ -229,7 +238,6 @@ export function describeIdentityProviderContract(
 				).resolves.not.toBeNull();
 			});
 
-			// The point of routing a password change through this port at all.
 			it('revokes every session when the password changes', async () => {
 				const account = await registered();
 				const session = await provider.startSession(account.id);

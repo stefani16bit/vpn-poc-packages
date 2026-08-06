@@ -1,12 +1,3 @@
-/**
- * Runs every conformance suite against the in-memory adapters.
- *
- * Two jobs at once. It proves the fakes are honest implementations rather than
- * convenient stubs - they are also the `memory` drivers the API runs on - and
- * it proves the suites themselves are runnable, so an adapter author who wires
- * one up is debugging their adapter and not the contract.
- */
-
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -66,8 +57,6 @@ describeBillingProviderContract('MemoryBillingProvider', () => {
 	};
 });
 
-// Behaviour specific to these implementations, which the shared contracts have
-// no business asserting.
 describe('flattenCacheKey', () => {
 	it('renders a null owner as an explicit segment', () => {
 		expect(flattenCacheKey({ owner: null, namespace: 'n', id: 'i' })).toBe('global:n:i');

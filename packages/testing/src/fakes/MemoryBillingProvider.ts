@@ -1,12 +1,3 @@
-/**
- * In-memory IBillingProvider. Doubles as the `memory` billing driver, and is
- * what the API's own tests run against so they never need localstripe up.
- *
- * emit* build the webhook payloads a real provider would post, in this
- * adapter's own envelope format. They are the test's way of saying "now the
- * payment succeeded" without a network.
- */
-
 import { randomUUID } from 'node:crypto';
 
 import type {
@@ -23,21 +14,12 @@ interface Envelope {
 	readonly id: string;
 	readonly type: string;
 	readonly accountId: string;
-	/** As it survives JSON: currentPeriodEnd has become a string. */
 	readonly subscription?: Omit<Subscription, 'currentPeriodEnd'> & {
 		readonly currentPeriodEnd: string | null;
 	};
 	readonly externalCustomerId?: string;
 }
 
-/**
- * A webhook body is JSON, and JSON has no Date. Returning the parsed object as
- * it stands would hand the caller a string where the port promises a Date -
- * which type-checks, because the assertion is on the way in, and then fails at
- * the first `.toISOString()` several layers away from here. Every real provider
- * adapter has the same obligation; this one is where it is easiest to forget,
- * precisely because the object went out as a Date.
- */
 function reviveSubscription(raw: NonNullable<Envelope['subscription']>): Subscription {
 	return {
 		...raw,
@@ -58,8 +40,6 @@ export class MemoryBillingProvider implements IBillingProvider {
 	}
 
 	async createCheckout(request: CheckoutRequest): Promise<CheckoutSession> {
-		// Idempotency in the adapter, not the caller: a double-clicked subscribe
-		// button reaches here twice and must produce one session.
 		const cached = this.#checkoutsByKey.get(request.idempotencyKey);
 		if (cached) return cached;
 
@@ -97,8 +77,6 @@ export class MemoryBillingProvider implements IBillingProvider {
 		try {
 			envelope = JSON.parse(rawBody) as Envelope;
 		} catch {
-			// A body we cannot parse is not an event we do not model. Callers are
-			// entitled to treat null as "ignore", so malformed input must throw.
 			throw new Error('webhook body is not valid JSON');
 		}
 
@@ -122,14 +100,10 @@ export class MemoryBillingProvider implements IBillingProvider {
 					externalCustomerId: envelope.externalCustomerId ?? 'cus_memory',
 				};
 			default:
-				// Unknown types are normal: providers add them without asking.
 				return null;
 		}
 	}
 
-	// --- test affordances -------------------------------------------------
-
-	/** Builds a signed webhook the way the provider would post it. */
 	emit(
 		type: string,
 		accountId: string,
@@ -160,9 +134,6 @@ export class MemoryBillingProvider implements IBillingProvider {
 		return this.#accountByCheckout.get(checkoutId);
 	}
 
-	// Not a real MAC. The contract only requires that a tampered body fails
-	// verification, and inventing crypto here would assert a property no caller
-	// may depend on from this adapter.
 	#signature(rawBody: string): string {
 		let hash = 0;
 		const material = `${this.#signingSecret}.${rawBody}`;

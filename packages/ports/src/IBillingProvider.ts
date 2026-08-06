@@ -1,27 +1,3 @@
-/**
- * Subscription billing.
- *
- * Why the normalised event: a webhook payload is the single most
- * vendor-specific object a payment integration touches, and letting it reach a
- * service means the vendor's field names end up in our database. parseWebhook
- * is the one function in the system allowed to know what a Stripe event looks
- * like; everything downstream sees NormalizedBillingEvent.
- *
- * Contract:
- *   - createCheckout takes an idempotencyKey. A user double-clicking "subscribe"
- *     must not create two subscriptions, and the retry that happens when our
- *     own request times out must not either.
- *   - verifyWebhookSignature is PURE and must be called on the RAW body, before
- *     any JSON parsing. A framework that re-serialises the body invalidates the
- *     signature, and the failure mode is "works locally, rejects in production".
- *   - parseWebhookEvent returns null for events we do not model. An unknown
- *     event type is not an error - the vendor adds them without asking.
- *   - externalEventId is what the caller deduplicates on. Every provider
- *     redelivers, and a redelivered `payment_failed` must not re-mail the user.
- *   - cancelSubscription('period_end') is the default a UI should offer;
- *     'now' exists for support and for account deletion.
- */
-
 export type SubscriptionStatus =
 	| 'active'
 	| 'trialing'
@@ -82,10 +58,8 @@ export interface IBillingProvider {
 	getSubscription(externalId: string): Promise<Subscription | null>;
 	cancelSubscription(externalId: string, when: 'now' | 'period_end'): Promise<Subscription>;
 
-	/** Pure. Called on the raw request body, before parsing. */
 	verifyWebhookSignature(rawBody: string, signatureHeader: string): boolean;
-	/** null for event types this system does not model. */
 	parseWebhookEvent(rawBody: string): NormalizedBillingEvent | null;
 }
 
-export const BILLING_PROVIDER = 'BILLING_PROVIDER';
+export const BILLING_PROVIDER: unique symbol = Symbol.for('vpn.billing-provider');

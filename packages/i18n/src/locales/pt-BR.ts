@@ -1,0 +1,155 @@
+export const ptBR = {
+	common: {
+		appName: 'poc-vpn',
+		loading: 'Carregando…',
+		wait: 'Aguarde…',
+		back: 'Voltar',
+		errorCode: 'Código',
+		language: 'Idioma',
+		languageName: 'Português (Brasil)',
+	},
+
+	auth: {
+		login: {
+			title: 'Entrar',
+			email: 'E-mail',
+			password: 'Senha',
+			submit: 'Entrar',
+			forgot: 'Esqueci minha senha',
+			signupLink: 'Criar conta',
+		},
+		signup: {
+			title: 'Criar conta',
+			email: 'E-mail',
+			password: 'Senha',
+			passwordHint: 'Mínimo de 12 caracteres. Uma frase longa é melhor que símbolos.',
+			submit: 'Criar conta',
+			haveAccount: 'Já tem conta?',
+			loginLink: 'Entrar',
+			checkInboxTitle: 'Confira seu e-mail',
+			checkInboxBody:
+				'Se {{email}} puder ser cadastrado, enviamos um link de confirmação.',
+			checkInboxExpiry: 'O link expira em 24 horas.',
+		},
+		verifyEmail: {
+			pendingTitle: 'Confirme seu e-mail',
+			pendingBody: 'Enviamos um link de confirmação. Abra-o para ativar sua conta.',
+			verifying: 'Confirmando…',
+			successTitle: 'E-mail confirmado',
+			successBody: 'Sua conta está ativa.',
+			failureTitle: 'Não foi possível confirmar',
+			email: 'E-mail',
+			resend: 'Reenviar link',
+			resendIn: 'Reenviar em {{seconds}}s',
+		},
+		forgotPassword: {
+			title: 'Esqueci minha senha',
+			email: 'E-mail',
+			submit: 'Enviar link',
+			sentTitle: 'Verifique seu e-mail',
+			sentBody: 'Se houver uma conta com esse endereço, enviamos um link de redefinição.',
+			sentExpiry: 'O link expira em 1 hora e só pode ser usado uma vez.',
+		},
+		resetPassword: {
+			title: 'Nova senha',
+			password: 'Nova senha',
+			submit: 'Redefinir senha',
+			warning: 'Ao redefinir, todas as sessões ativas nesta conta serão encerradas.',
+			invalidLinkTitle: 'Link inválido',
+			invalidLinkBody: 'Este endereço não contém um código de redefinição.',
+			requestNew: 'Solicitar um novo link',
+		},
+		logout: 'Sair',
+	},
+
+	billing: {
+		accountTitle: 'Sua conta',
+		subscriptionTitle: 'Assinatura',
+		renewsOn: 'renova em {{date}}',
+		cancelScheduled: 'O cancelamento foi agendado. O acesso continua até o fim do período pago.',
+		subscribeMonthly: 'Assinar mensal',
+		subscribeYearly: 'Assinar anual',
+		cancel: 'Cancelar assinatura',
+		status: {
+			none: 'Sem assinatura',
+			active: 'Ativa',
+			trialing: 'Em teste',
+			past_due: 'Pagamento pendente',
+			canceled: 'Cancelada',
+			incomplete: 'Aguardando confirmação do pagamento',
+		},
+	},
+
+	email: {
+		verify_email: {
+			subject: 'Confirme seu e-mail',
+			body: 'Bem-vindo ao poc-vpn.\n\nConfirme seu e-mail acessando:\n{{url}}\n\nO link expira em {{expiresInHours}} horas.',
+		},
+		reset_password: {
+			subject: 'Redefinição de senha',
+			body: 'Recebemos um pedido para redefinir sua senha.\n\nAcesse:\n{{url}}\n\nO link expira em {{expiresInHours}} hora e só pode ser usado uma vez. Se não foi você, ignore este e-mail.',
+		},
+		password_changed: {
+			subject: 'Sua senha foi alterada',
+			body: 'Sua senha foi alterada e todas as sessões ativas foram encerradas.\n\nSe não foi você, redefina sua senha imediatamente.',
+		},
+		welcome: {
+			subject: 'Sua conta está ativa',
+			body: 'Seu e-mail foi confirmado e sua conta está ativa.',
+		},
+		payment_failed: {
+			subject: 'Não conseguimos processar seu pagamento',
+			body: 'A cobrança da sua assinatura falhou.\n\nAtualize seu meio de pagamento em:\n{{url}}',
+		},
+		subscription_canceled: {
+			subject: 'Assinatura cancelada',
+			body: 'Sua assinatura foi cancelada e o acesso continua até {{endsAt}}.',
+		},
+	},
+
+	sms: {
+		verify_phone: 'Seu código de verificação poc-vpn é {{code}}.',
+		login_code: 'Seu código de acesso poc-vpn é {{code}}.',
+	},
+
+	validation: {
+		email: {
+			invalid: 'Informe um e-mail válido.',
+			tooLong: 'E-mail longo demais.',
+		},
+		password: {
+			tooShort: 'A senha precisa ter ao menos 12 caracteres.',
+			tooLong: 'A senha pode ter no máximo 200 caracteres.',
+			required: 'Informe sua senha.',
+		},
+		token: {
+			invalid: 'Código inválido.',
+		},
+		locale: {
+			unsupported: 'Idioma não suportado.',
+		},
+	},
+
+	errors: {
+		VALIDATION_FAILED: 'Confira os campos destacados.',
+		INVALID_CREDENTIALS: 'E-mail ou senha incorretos.',
+		EMAIL_NOT_VERIFIED: 'Confirme seu e-mail antes de entrar.',
+		TOKEN_INVALID: 'Este link não é válido ou já foi utilizado.',
+		TOKEN_EXPIRED: 'Este link expirou. Solicite um novo.',
+		SESSION_REUSE_DETECTED: 'Sua sessão foi encerrada por segurança. Entre novamente.',
+		RATE_LIMITED: 'Muitas tentativas. Aguarde alguns minutos.',
+		UNAUTHENTICATED: 'Entre para continuar.',
+		FORBIDDEN: 'Você não tem acesso a este recurso.',
+		NOT_FOUND: 'Não encontramos o que você procura.',
+		CONFLICT: 'Esta operação conflita com o estado atual.',
+		PAYMENT_REQUIRED: 'É necessário ter uma assinatura ativa.',
+		INTERNAL: 'Algo deu errado do nosso lado. Tente novamente.',
+		_NETWORK_ERROR: 'Não foi possível conectar. Verifique sua internet.',
+		_PARSE_ERROR: 'Recebemos uma resposta inesperada do servidor.',
+		_UNKNOWN_ERROR: 'Algo deu errado. Tente novamente.',
+	},
+} as const;
+
+type Shape<T> = { [K in keyof T]: T[K] extends string ? string : Shape<T[K]> };
+
+export type LocaleMessages = Shape<typeof ptBR>;

@@ -1,13 +1,3 @@
-/**
- * The full port surface. Adding a file here without exporting it from this
- * barrel is the one way a port can exist and be unusable, so the guard spec
- * asserts the two stay in step.
- *
- * Rate limiting is deliberately NOT a port. It is a policy expressed over
- * ICacheStore.increment, and our own policies do not get interfaces - only the
- * things we would have to replace do. See docs/03-DECISION-LOG.md DEC-004.
- */
-
 export type { IClock } from './IClock.js';
 export { CLOCK } from './IClock.js';
 

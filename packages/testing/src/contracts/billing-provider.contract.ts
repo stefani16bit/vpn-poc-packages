@@ -1,11 +1,3 @@
-/**
- * The behaviour every IBillingProvider adapter must exhibit.
- *
- * The harness supplies a signed webhook rather than a fixture string, because
- * the signature is provider-specific and the assertions about it - tampering
- * fails, an unsigned body fails - are not.
- */
-
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import type { CheckoutRequest, IBillingProvider } from '@vpn/ports';
@@ -18,9 +10,7 @@ export interface SignedWebhook {
 
 export interface BillingProviderHarness {
 	readonly provider: IBillingProvider;
-	/** A signed `subscription_activated` for this account. */
 	activationWebhook(accountId: string): Promise<SignedWebhook> | SignedWebhook;
-	/** A signed body whose `type` this system does not model. */
 	unknownEventWebhook(): Promise<SignedWebhook> | SignedWebhook;
 }
 
@@ -56,8 +46,6 @@ export function describeBillingProviderContract(
 				expect(session.url).toBeTruthy();
 			});
 
-			// A double-clicked subscribe button, or our own timeout retry. Two
-			// sessions here means two subscriptions and a refund conversation.
 			it('returns the same session for a repeated idempotency key', async () => {
 				const first = await provider.createCheckout(checkout());
 				const second = await provider.createCheckout(checkout());
@@ -105,19 +93,12 @@ export function describeBillingProviderContract(
 				expect(event?.accountId).toBe('account-1');
 			});
 
-			// The value the caller deduplicates on. Without it, a redelivery is
-			// indistinguishable from a second real event.
 			it('carries a stable external event id', async () => {
 				const hook = await harness.activationWebhook('account-1');
 				expect(provider.parseWebhookEvent(hook.rawBody)?.externalEventId).toBe(hook.eventId);
 				expect(provider.parseWebhookEvent(hook.rawBody)?.externalEventId).toBe(hook.eventId);
 			});
 
-			// A webhook body is JSON and JSON has no Date. An adapter that passes
-			// the parsed object straight through returns a string where the port
-			// promises a Date - it type-checks, and then fails at the first
-			// .toISOString() several layers away, in whatever handler happens to
-			// touch it first.
 			it('returns currentPeriodEnd as a Date rather than as the wire format', async () => {
 				const hook = await harness.activationWebhook('account-1');
 				const event = provider.parseWebhookEvent(hook.rawBody);
@@ -134,8 +115,6 @@ export function describeBillingProviderContract(
 				expect(provider.parseWebhookEvent(hook.rawBody)).toBeNull();
 			});
 
-			// null means "ignore this". A body we could not parse at all is a
-			// different situation and must not be silently ignored.
 			it('throws rather than returning null for an unparseable body', async () => {
 				expect(() => provider.parseWebhookEvent('<html>gateway timeout</html>')).toThrow();
 			});

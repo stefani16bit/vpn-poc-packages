@@ -1,7 +1,3 @@
-/**
- * The behaviour every ISmsSender adapter must exhibit.
- */
-
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import type { ISmsSender, SmsMessage } from '@vpn/ports';
@@ -49,9 +45,6 @@ export function describeSmsSenderContract(
 			expect(await harness.inspect()).toHaveLength(1);
 		});
 
-		// Normalisation is the caller's job. An adapter that quietly accepts a
-		// local format lets the bug through to whichever provider is wired in
-		// next, where it surfaces as a silent non-delivery.
 		it('rejects a number that is not E.164', async () => {
 			await expect(harness.sender.send(message({ phoneNumber: '11999999999' }))).rejects.toThrow();
 		});

@@ -9,8 +9,6 @@ import {
 } from './auth.js';
 
 describe('emailSchema', () => {
-	// The normalisation, not the validation, is the load-bearing part: it is what
-	// stops Ada@example.com and ada@example.com from becoming two accounts.
 	it('lowercases and trims', () => {
 		expect(emailSchema.parse('  Ada@Example.COM ')).toBe('ada@example.com');
 	});
@@ -36,18 +34,34 @@ describe('passwordSchema', () => {
 });
 
 describe('registerRequestSchema', () => {
-	it('defaults the locale so the caller may omit it', () => {
+	it('leaves the locale undefined when omitted, so the server can negotiate it', () => {
 		const parsed = registerRequestSchema.parse({
 			email: 'ada@example.com',
 			password: 'a-sufficiently-long-password',
 		});
-		expect(parsed.locale).toBe('pt-BR');
+		expect(parsed.locale).toBeUndefined();
+	});
+
+	it('keeps an explicit locale', () => {
+		const parsed = registerRequestSchema.parse({
+			email: 'ada@example.com',
+			password: 'a-sufficiently-long-password',
+			locale: 'en',
+		});
+		expect(parsed.locale).toBe('en');
+	});
+
+	it('rejects a locale we do not support', () => {
+		const parsed = registerRequestSchema.safeParse({
+			email: 'ada@example.com',
+			password: 'a-sufficiently-long-password',
+			locale: 'klingon',
+		});
+		expect(parsed.success).toBe(false);
 	});
 });
 
 describe('loginRequestSchema', () => {
-	// Login must not apply the registration password policy. Tightening the rule
-	// later would otherwise lock out every account created under the old one.
 	it('accepts a password shorter than the registration minimum', () => {
 		const parsed = loginRequestSchema.safeParse({ email: 'ada@example.com', password: 'short' });
 		expect(parsed.success).toBe(true);

@@ -1,12 +1,3 @@
-/**
- * Structural guards for the ports package.
- *
- * These assert properties that are cheap to break and expensive to notice: a
- * port file that nobody exported, a DI token that does not match its file, or a
- * runtime dependency creeping into the one package every other package depends
- * on. None of them can be caught by type-checking.
- */
-
 import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -35,25 +26,32 @@ describe('ports package structure', () => {
 		expect(source).toMatch(new RegExp(`export interface ${portFile}\\b`));
 	});
 
+	it('exports a distinct symbol per port', () => {
+		const tokens = portFiles.map((portFile) => {
+			const source = readFileSync(join(here, `${portFile}.ts`), 'utf8');
+			return /Symbol\.for\('([^']+)'\)/.exec(source)?.[1];
+		});
+		expect(new Set(tokens).size).toBe(portFiles.length);
+	});
+
 	it.each(portFiles)('%s exports a DI token, because interfaces erase at runtime', (portFile) => {
 		const source = readFileSync(join(here, `${portFile}.ts`), 'utf8');
-		// IIdentityProvider -> IDENTITY_PROVIDER
 		const expected = portFile
 			.slice(1)
 			.replace(/([a-z0-9])([A-Z])/g, '$1_$2')
 			.toUpperCase();
-		expect(source).toContain(`export const ${expected} = '${expected}';`);
+		const slug = expected.toLowerCase().replace(/_/g, '-');
+		expect(source).toContain(
+			`export const ${expected}: unique symbol = Symbol.for('vpn.${slug}');`,
+		);
 	});
 
-	it.each(portFiles)('%s opens with a comment explaining why it exists', (portFile) => {
+	it.each(portFiles)('%s carries no explanatory comment block', (portFile) => {
 		const source = readFileSync(join(here, `${portFile}.ts`), 'utf8');
-		expect(source.startsWith('/**')).toBe(true);
-		expect(source).toContain('Contract:');
+		expect(source.startsWith('/*')).toBe(false);
+		expect(source).not.toMatch(/^\s*\/\//m);
 	});
 
-	// The whole point of this package is that anything may depend on it. A single
-	// runtime dependency here is inherited by every adapter, every app, and the
-	// browser bundle.
 	it('has no runtime dependencies', () => {
 		const manifest = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf8')) as {
 			dependencies?: Record<string, string>;

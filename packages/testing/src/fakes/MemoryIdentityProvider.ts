@@ -1,15 +1,3 @@
-/**
- * In-memory IIdentityProvider. Doubles as the `memory` identity driver.
- *
- * The session model is the part worth reading: refresh tokens belong to a
- * FAMILY, not to a session row. Rotation issues a new token in the same family
- * and marks the old one spent. Presenting a spent token is the signature of a
- * stolen refresh token being replayed - the legitimate client already rotated -
- * so the whole family dies, which logs the thief and the victim out together
- * and forces a fresh login. Rejecting only the replayed token would leave the
- * thief holding a valid one.
- */
-
 import { randomUUID } from 'node:crypto';
 
 import type {
@@ -27,6 +15,7 @@ interface AccountRow {
 	email: string;
 	passwordHash: string;
 	emailVerifiedAt: Date | null;
+	locale: string;
 	createdAt: Date;
 }
 
@@ -57,7 +46,7 @@ export class MemoryIdentityProvider implements IIdentityProvider {
 		this.#refreshTtlSeconds = options.refreshTokenTtlSeconds ?? 30 * 24 * 60 * 60;
 	}
 
-	async register(email: string, password: string): Promise<RegisterOutcome> {
+	async register(email: string, password: string, locale: string): Promise<RegisterOutcome> {
 		const normalized = normalizeEmail(email);
 		if (this.#accountIdByEmail.has(normalized)) return { kind: 'email_taken' };
 
@@ -66,6 +55,7 @@ export class MemoryIdentityProvider implements IIdentityProvider {
 			email: normalized,
 			passwordHash: await this.#hasher.hash(password),
 			emailVerifiedAt: null,
+			locale,
 			createdAt: this.#clock.now(),
 		};
 		this.#accountsById.set(row.id, row);
@@ -76,10 +66,6 @@ export class MemoryIdentityProvider implements IIdentityProvider {
 	async authenticate(email: string, password: string): Promise<Account | null> {
 		const row = this.#rowByEmail(email);
 		if (!row) {
-			// Hash anyway. Returning early on an unknown address makes the
-			// response measurably faster than for a known one, and that timing
-			// difference is an enumeration oracle just as surely as a different
-			// error message would be.
 			await this.#hasher.verify(password, 'fake$__absent__');
 			return null;
 		}
@@ -120,7 +106,6 @@ export class MemoryIdentityProvider implements IIdentityProvider {
 
 	async revokeSession(refreshToken: string): Promise<void> {
 		const row = this.#tokens.get(refreshToken);
-		// Idempotent: revoking an unknown or already-dead token is a success.
 		if (row) this.#revokedFamilies.add(row.familyId);
 	}
 
@@ -130,10 +115,13 @@ export class MemoryIdentityProvider implements IIdentityProvider {
 		}
 	}
 
+	async setLocale(accountId: string, locale: string): Promise<void> {
+		const row = this.#accountsById.get(accountId);
+		if (row) row.locale = locale;
+	}
+
 	async markEmailVerified(accountId: string): Promise<void> {
 		const row = this.#accountsById.get(accountId);
-		// Idempotent, and it keeps the ORIGINAL timestamp: re-verifying must not
-		// look like the user verified again today.
 		if (row && row.emailVerifiedAt === null) row.emailVerifiedAt = this.#clock.now();
 	}
 
@@ -141,9 +129,6 @@ export class MemoryIdentityProvider implements IIdentityProvider {
 		const row = this.#accountsById.get(accountId);
 		if (!row) return;
 		row.passwordHash = await this.#hasher.hash(newPassword);
-		// Non-negotiable, and the reason changePassword is not just an update:
-		// a password change that leaves existing sessions alive does not evict
-		// whoever the user is changing it because of.
 		await this.revokeAllSessions(accountId);
 	}
 
@@ -169,6 +154,7 @@ function toAccount(row: AccountRow): Account {
 		id: row.id,
 		email: row.email,
 		emailVerifiedAt: row.emailVerifiedAt,
+		locale: row.locale,
 		createdAt: row.createdAt,
 	};
 }

@@ -43,6 +43,16 @@ importers:
         specifier: workspace:*
         version: link:../config
 
+  packages/i18n:
+    dependencies:
+      '@vpn/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@vpn/config':
+        specifier: workspace:*
+        version: link:../config
+
   packages/ports:
     devDependencies:
       '@vpn/config':

@@ -1,14 +1,3 @@
-/**
- * Billing request/response schemas.
- *
- * Contract:
- *   - the client never names a price it invents; it picks a plan and the server
- *     resolves the price id. A client-supplied price is a client-supplied
- *     amount, one refactor later.
- *   - the subscription view is the projection of our own table, not a passthrough
- *     of the provider's object
- */
-
 import { z } from 'zod';
 
 export const PLAN_IDS = ['monthly', 'yearly'] as const;

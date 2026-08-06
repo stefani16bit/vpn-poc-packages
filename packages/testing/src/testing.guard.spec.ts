@@ -1,12 +1,3 @@
-/**
- * Structural guards for the testing package.
- *
- * The vitest rule is the load-bearing one. The fakes are also the `memory`
- * drivers the API runs on locally, so anything they import lands in the
- * production dependency graph - and vitest arriving there is the kind of
- * mistake that only shows up as a container that will not start.
- */
-
 import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,8 +20,6 @@ describe('fakes are runtime-safe', () => {
 
 	it.each(fakeFiles)('%s imports @vpn/ports as types only', (fakeFile) => {
 		const source = readFileSync(join(fakesDir, fakeFile), 'utf8');
-		// A value import of @vpn/ports would be a DI token, and a fake has no
-		// business knowing about the container that wires it.
 		for (const line of source.split('\n')) {
 			if (line.includes("from '@vpn/ports'")) {
 				expect(line.includes('import type') || line.trim().startsWith('}')).toBe(true);
@@ -54,16 +43,14 @@ describe('conformance suites', () => {
 		expect(barrel).toContain(`./${contractFile.replace(/\.ts$/, '')}.js`);
 	});
 
-	// A suite that only defines assertions and never exports the describe*
-	// function is a suite no adapter can run.
 	it.each(contractFiles)('%s exports a describe* entry point', (contractFile) => {
 		const source = readFileSync(join(contractsDir, contractFile), 'utf8');
 		expect(source).toMatch(/export function describe\w+Contract/);
 	});
 
-	it.each(contractFiles)('%s explains why it exists', (contractFile) => {
+	it.each(contractFiles)('%s carries no explanatory comment block', (contractFile) => {
 		const source = readFileSync(join(contractsDir, contractFile), 'utf8');
-		expect(source.startsWith('/**')).toBe(true);
+		expect(source.startsWith('/*')).toBe(false);
 	});
 });
 

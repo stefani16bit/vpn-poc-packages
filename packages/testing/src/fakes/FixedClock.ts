@@ -1,11 +1,3 @@
-/**
- * A clock the test moves by hand.
- *
- * Why not vi.useFakeTimers: fake timers are global and leak across a suite that
- * forgets to restore them, and they also freeze timers the adapter under test
- * legitimately uses. An injected clock only affects the code that asked for it.
- */
-
 import type { IClock } from '@vpn/ports';
 
 export class FixedClock implements IClock {
@@ -16,7 +8,6 @@ export class FixedClock implements IClock {
 	}
 
 	now(): Date {
-		// A copy, so a caller mutating the returned Date cannot move the clock.
 		return new Date(this.#current.getTime());
 	}
 

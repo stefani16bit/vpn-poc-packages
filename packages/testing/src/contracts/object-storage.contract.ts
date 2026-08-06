@@ -1,7 +1,3 @@
-/**
- * The behaviour every IObjectStorage adapter must exhibit.
- */
-
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import type { IObjectStorage } from '@vpn/ports';
@@ -36,8 +32,6 @@ export function describeObjectStorageContract(
 			expect(new TextDecoder().decode(found?.body)).toBe('replaced');
 		});
 
-		// The caller owns its buffer and is entitled to reuse it. An adapter that
-		// keeps the reference hands out whatever the caller wrote next.
 		it('does not alias the caller buffer', async () => {
 			const mutable = new TextEncoder().encode('original');
 			await storage.put('k', mutable, 'text/plain');

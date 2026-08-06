@@ -1,7 +1,3 @@
-/**
- * The behaviour every IPasswordHasher adapter must exhibit.
- */
-
 import { describe, expect, it } from 'vitest';
 
 import type { IPasswordHasher } from '@vpn/ports';
@@ -23,21 +19,12 @@ export function describePasswordHasherContract(
 			await expect(hasher.verify('something-else-entirely', hash)).resolves.toBe(false);
 		});
 
-		// Weak on purpose. A real assertion here would have to know the adapter's
-		// format, which is the one thing the contract must not encode - so this
-		// catches the identity-function mistake and nothing subtler. The test
-		// hasher passes it while still being trivially reversible, which is why
-		// FakePasswordHasher's own comment says out loud that it is not a
-		// security control.
 		it('does not return the password unchanged', async () => {
 			const hasher = await createHasher();
 			const secret = 'correct horse battery staple';
 			await expect(hasher.hash(secret)).resolves.not.toBe(secret);
 		});
 
-		// A corrupt row must read as a wrong password. Throwing here would turn
-		// the login endpoint into an oracle: a 500 for a known-broken account and
-		// a 401 for everything else tells an attacker which addresses exist.
 		it('returns false rather than throwing for a malformed hash', async () => {
 			const hasher = await createHasher();
 			await expect(hasher.verify('anything', 'not-a-hash')).resolves.toBe(false);

@@ -1,13 +1,3 @@
-/**
- * The behaviour every IEmailSender adapter must exhibit.
- *
- * `inspect` is how a suite reads what the adapter did without knowing where the
- * message went - the memory adapter reads its own array, the SMTP adapter reads
- * mailpit's API. Without that seam the idempotency assertion could only be
- * written once, against the fake, which is exactly the assertion most likely to
- * be missing from the real adapter.
- */
-
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import type { EmailMessage, IEmailSender } from '@vpn/ports';
@@ -19,7 +9,6 @@ export interface SentEmail {
 
 export interface EmailSenderHarness {
 	readonly sender: IEmailSender;
-	/** Everything this adapter has accepted, oldest first. */
 	inspect(): Promise<readonly SentEmail[]> | readonly SentEmail[];
 }
 
@@ -52,9 +41,6 @@ export function describeEmailSenderContract(
 			expect(sent[0]).toMatchObject({ to: 'ada@example.com', template: 'verify_email' });
 		});
 
-		// The requirement that makes queue redelivery safe. A retried send must
-		// be a no-op, and it must be a SUCCESSFUL no-op - throwing would make the
-		// queue retry forever.
 		it('does not send twice for the same idempotency key', async () => {
 			await harness.sender.send(message());
 			await expect(harness.sender.send(message())).resolves.toBeUndefined();
