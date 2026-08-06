@@ -9,6 +9,10 @@ export const en: LocaleMessages = {
 		errorCode: 'Reference',
 		language: 'Language',
 		languageName: 'English',
+		theme: 'Theme',
+		themeDark: 'Dark',
+		themeLight: 'Light',
+		skipToContent: 'Skip to content',
 	},
 
 	auth: {
@@ -69,6 +73,7 @@ export const en: LocaleMessages = {
 		renewsOn: 'renews on {{date}}',
 		cancelScheduled:
 			'Cancellation is scheduled. Access continues until the end of the paid period.',
+		periodEndUnknown: 'the end of the current period',
 		subscribeMonthly: 'Subscribe monthly',
 		subscribeYearly: 'Subscribe yearly',
 		cancel: 'Cancel subscription',

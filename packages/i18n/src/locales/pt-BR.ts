@@ -7,6 +7,10 @@ export const ptBR = {
 		errorCode: 'Código',
 		language: 'Idioma',
 		languageName: 'Português (Brasil)',
+		theme: 'Tema',
+		themeDark: 'Escuro',
+		themeLight: 'Claro',
+		skipToContent: 'Ir para o conteúdo',
 	},
 
 	auth: {
@@ -67,6 +71,7 @@ export const ptBR = {
 		subscriptionTitle: 'Assinatura',
 		renewsOn: 'renova em {{date}}',
 		cancelScheduled: 'O cancelamento foi agendado. O acesso continua até o fim do período pago.',
+		periodEndUnknown: 'o fim do período vigente',
 		subscribeMonthly: 'Assinar mensal',
 		subscribeYearly: 'Assinar anual',
 		cancel: 'Cancelar assinatura',
