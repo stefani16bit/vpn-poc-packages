@@ -1,0 +1,10 @@
+# tools/consumer-check is deliberately NOT a workspace member. It installs the
+# published tarballs from Verdaccio instead, which is the only way a broken
+# `files`/`exports` field ever surfaces before a consumer hits it.
+packages:
+  - 'packages/*'
+# pnpm 11 requires an explicit decision per package with a postinstall script.
+# Both of these compile a native binary they cannot run without.
+allowBuilds:
+  esbuild: true
+  nx: true

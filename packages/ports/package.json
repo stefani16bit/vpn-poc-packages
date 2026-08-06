@@ -1,0 +1,19 @@
+{
+  "name": "@vpn/ports",
+  "version": "0.1.0",
+  "description": "Interfaces every external dependency of poc-vpn is reached through. Types only, zero runtime dependencies.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "files": ["dist"],
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@vpn/config": "workspace:*"
+  }
+}

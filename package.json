@@ -1,0 +1,27 @@
+{
+  "name": "@vpn/packages-root",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.0.8",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "nx run-many -t build",
+    "test": "nx run-many -t test",
+    "test:agent": "cross-env NX_DAEMON=false NX_NO_CLOUD=true CI=true nx run-many -t test",
+    "typecheck": "nx run-many -t typecheck",
+    "changeset": "changeset",
+    "version:local": "changeset version",
+    "publish:local": "pnpm build && pnpm -r --filter './packages/*' publish --registry http://localhost:24873 --no-git-checks --access public",
+    "consumer-check": "sh tools/consumer-check/run.sh"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.10",
+    "@types/node": "^22.10.0",
+    "cross-env": "^7.0.3",
+    "nx": "^22.0.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

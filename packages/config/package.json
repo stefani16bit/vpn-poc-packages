@@ -1,0 +1,23 @@
+{
+  "name": "@vpn/config",
+  "version": "0.1.0",
+  "description": "Shared tsconfig and vitest presets for every poc-vpn workspace.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "files": ["dist", "tsconfig"],
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./tsconfig/base.json": "./tsconfig/base.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "peerDependencies": {
+    "vitest": ">=2"
+  },
+  "peerDependenciesMeta": {
+    "vitest": { "optional": true }
+  }
+}
