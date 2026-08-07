@@ -1,10 +1,16 @@
 import { z } from 'zod';
 
-export const PLAN_IDS = ['monthly', 'yearly'] as const;
-export type PlanId = (typeof PLAN_IDS)[number];
+export const TIER_IDS = ['pro'] as const;
+export const tierIdSchema = z.enum(TIER_IDS);
+export type TierId = z.infer<typeof tierIdSchema>;
+
+export const CADENCES = ['monthly', 'yearly'] as const;
+export const cadenceSchema = z.enum(CADENCES);
+export type Cadence = z.infer<typeof cadenceSchema>;
 
 export const createCheckoutRequestSchema = z.object({
-	plan: z.enum(PLAN_IDS),
+	tier: tierIdSchema,
+	cadence: cadenceSchema,
 });
 export type CreateCheckoutRequest = z.infer<typeof createCheckoutRequestSchema>;
 
