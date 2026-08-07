@@ -37,3 +37,6 @@ export { OBJECT_STORAGE } from './IObjectStorage.js';
 
 export type { IErrorReporter, ErrorContext } from './IErrorReporter.js';
 export { ERROR_REPORTER } from './IErrorReporter.js';
+
+export type { IJobQueue, JobEnvelope, ReceivedJob, ReceiveOptions } from './IJobQueue.js';
+export { JOB_QUEUE } from './IJobQueue.js';

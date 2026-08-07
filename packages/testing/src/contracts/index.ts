@@ -16,3 +16,6 @@ export { describeObjectStorageContract } from './object-storage.contract.js';
 
 export { describeBillingProviderContract } from './billing-provider.contract.js';
 export type { BillingProviderHarness, SignedWebhook } from './billing-provider.contract.js';
+
+export { describeJobQueueContract } from './job-queue.contract.js';
+export type { JobQueueHarness } from './job-queue.contract.js';

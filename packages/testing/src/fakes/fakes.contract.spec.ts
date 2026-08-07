@@ -7,6 +7,7 @@ import {
 	describeIdentityProviderContract,
 	describeObjectStorageContract,
 	describePasswordHasherContract,
+	describeJobQueueContract,
 	describeSmsSenderContract,
 } from '../contracts/index.js';
 import { FakePasswordHasher } from './FakePasswordHasher.js';
@@ -16,6 +17,7 @@ import { MemoryCacheStore, flattenCacheKey } from './MemoryCacheStore.js';
 import { MemoryEmailSender } from './MemoryEmailSender.js';
 import { MemoryIdentityProvider } from './MemoryIdentityProvider.js';
 import { MemoryObjectStorage } from './MemoryObjectStorage.js';
+import { MemoryJobQueue } from './MemoryJobQueue.js';
 import { MemorySmsSender } from './MemorySmsSender.js';
 
 describeCacheStoreContract('MemoryCacheStore', () => {
@@ -55,6 +57,11 @@ describeBillingProviderContract('MemoryBillingProvider', () => {
 			}),
 		unknownEventWebhook: () => provider.emit('invoice.upcoming', 'account-1'),
 	};
+});
+
+describeJobQueueContract('MemoryJobQueue', () => {
+	const queue = new MemoryJobQueue(new FixedClock());
+	return { queue, expire: () => queue.makeEverythingVisible() };
 });
 
 describe('flattenCacheKey', () => {

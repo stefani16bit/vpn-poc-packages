@@ -7,3 +7,5 @@ export { MemoryObjectStorage } from './MemoryObjectStorage.js';
 export { MemoryIdentityProvider } from './MemoryIdentityProvider.js';
 export type { MemoryIdentityProviderOptions } from './MemoryIdentityProvider.js';
 export { MemoryBillingProvider } from './MemoryBillingProvider.js';
+export { MemoryJobQueue } from './MemoryJobQueue.js';
+export type { MemoryJobQueueOptions } from './MemoryJobQueue.js';
