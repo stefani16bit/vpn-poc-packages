@@ -31,24 +31,28 @@ export type NormalizedBillingEvent =
 	| {
 			readonly kind: 'subscription_activated';
 			readonly externalEventId: string;
+			readonly occurredAt: Date;
 			readonly accountId: string;
 			readonly subscription: Subscription;
 	  }
 	| {
 			readonly kind: 'subscription_updated';
 			readonly externalEventId: string;
+			readonly occurredAt: Date;
 			readonly accountId: string;
 			readonly subscription: Subscription;
 	  }
 	| {
 			readonly kind: 'subscription_canceled';
 			readonly externalEventId: string;
+			readonly occurredAt: Date;
 			readonly accountId: string;
 			readonly subscription: Subscription;
 	  }
 	| {
 			readonly kind: 'payment_failed';
 			readonly externalEventId: string;
+			readonly occurredAt: Date;
 			readonly accountId: string;
 			readonly externalCustomerId: string;
 	  };

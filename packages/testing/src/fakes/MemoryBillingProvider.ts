@@ -13,6 +13,7 @@ import type {
 interface Envelope {
 	readonly id: string;
 	readonly type: string;
+	readonly created: string;
 	readonly accountId: string;
 	readonly subscription?: Omit<Subscription, 'currentPeriodEnd'> & {
 		readonly currentPeriodEnd: string | null;
@@ -88,6 +89,7 @@ export class MemoryBillingProvider implements IBillingProvider {
 				return {
 					kind: envelope.type,
 					externalEventId: envelope.id,
+					occurredAt: new Date(envelope.created),
 					accountId: envelope.accountId,
 					subscription: reviveSubscription(envelope.subscription),
 				};
@@ -96,6 +98,7 @@ export class MemoryBillingProvider implements IBillingProvider {
 				return {
 					kind: 'payment_failed',
 					externalEventId: envelope.id,
+					occurredAt: new Date(envelope.created),
 					accountId: envelope.accountId,
 					externalCustomerId: envelope.externalCustomerId ?? 'cus_memory',
 				};
@@ -107,10 +110,21 @@ export class MemoryBillingProvider implements IBillingProvider {
 	emit(
 		type: string,
 		accountId: string,
-		extras: { subscription?: Subscription; externalCustomerId?: string } = {},
+		extras: {
+			subscription?: Subscription;
+			externalCustomerId?: string;
+			occurredAt?: Date;
+		} = {},
 	): { rawBody: string; signature: string; eventId: string } {
+		const { occurredAt, ...rest } = extras;
 		const eventId = `evt_${randomUUID()}`;
-		const rawBody = JSON.stringify({ id: eventId, type, accountId, ...extras });
+		const rawBody = JSON.stringify({
+			id: eventId,
+			type,
+			created: (occurredAt ?? this.#clock.now()).toISOString(),
+			accountId,
+			...rest,
+		});
 		return { rawBody, signature: this.#signature(rawBody), eventId };
 	}
 

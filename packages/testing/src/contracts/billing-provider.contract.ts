@@ -110,6 +110,26 @@ export function describeBillingProviderContract(
 				).toBe(true);
 			});
 
+			it('returns occurredAt as a Date rather than as the wire format', async () => {
+				const hook = await harness.activationWebhook('account-1');
+				const event = provider.parseWebhookEvent(hook.rawBody);
+
+				expect(event?.occurredAt).toBeInstanceOf(Date);
+				expect(Number.isNaN(event?.occurredAt.getTime())).toBe(false);
+			});
+
+			it('orders two events by occurredAt in the order the provider emitted them', async () => {
+				const first = await harness.activationWebhook('account-1');
+				const second = await harness.activationWebhook('account-1');
+
+				const earlier = provider.parseWebhookEvent(first.rawBody);
+				const later = provider.parseWebhookEvent(second.rawBody);
+
+				expect(later?.occurredAt.getTime()).toBeGreaterThanOrEqual(
+					earlier?.occurredAt.getTime() ?? 0,
+				);
+			});
+
 			it('returns null for an event type this system does not model', async () => {
 				const hook = await harness.unknownEventWebhook();
 				expect(provider.parseWebhookEvent(hook.rawBody)).toBeNull();
