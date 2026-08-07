@@ -4,7 +4,6 @@ import {
 	describeBillingProviderContract,
 	describeCacheStoreContract,
 	describeEmailSenderContract,
-	describeIdentityProviderContract,
 	describeObjectStorageContract,
 	describePasswordHasherContract,
 	describeJobQueueContract,
@@ -15,7 +14,6 @@ import { FixedClock } from './FixedClock.js';
 import { MemoryBillingProvider } from './MemoryBillingProvider.js';
 import { MemoryCacheStore, flattenCacheKey } from './MemoryCacheStore.js';
 import { MemoryEmailSender } from './MemoryEmailSender.js';
-import { MemoryIdentityProvider } from './MemoryIdentityProvider.js';
 import { MemoryObjectStorage } from './MemoryObjectStorage.js';
 import { MemoryJobQueue } from './MemoryJobQueue.js';
 import { MemorySmsSender } from './MemorySmsSender.js';
@@ -23,14 +21,6 @@ import { MemorySmsSender } from './MemorySmsSender.js';
 describeCacheStoreContract('MemoryCacheStore', () => {
 	const clock = new FixedClock();
 	return { store: new MemoryCacheStore(clock), advance: (seconds) => clock.advance(seconds) };
-});
-
-describeIdentityProviderContract('MemoryIdentityProvider', () => {
-	const clock = new FixedClock();
-	return {
-		provider: new MemoryIdentityProvider(new FakePasswordHasher(), clock),
-		advance: (seconds) => clock.advance(seconds),
-	};
 });
 
 describePasswordHasherContract('FakePasswordHasher', () => new FakePasswordHasher());

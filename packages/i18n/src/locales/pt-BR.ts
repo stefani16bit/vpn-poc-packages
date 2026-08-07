@@ -127,6 +127,9 @@ export const ptBR = {
 			tooLong: 'A senha pode ter no máximo 200 caracteres.',
 			required: 'Informe sua senha.',
 		},
+		slug: {
+			invalid: 'Identificador de empresa inválido.',
+		},
 		token: {
 			invalid: 'Código inválido.',
 		},

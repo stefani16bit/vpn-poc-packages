@@ -1,9 +1,6 @@
 export { describeCacheStoreContract } from './cache-store.contract.js';
 export type { CacheStoreHarness } from './cache-store.contract.js';
 
-export { describeIdentityProviderContract } from './identity-provider.contract.js';
-export type { IdentityProviderHarness } from './identity-provider.contract.js';
-
 export { describePasswordHasherContract } from './password-hasher.contract.js';
 
 export { describeEmailSenderContract } from './email-sender.contract.js';

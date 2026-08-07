@@ -129,6 +129,9 @@ export const en: LocaleMessages = {
 			tooLong: 'Password must be at most 200 characters.',
 			required: 'Enter your password.',
 		},
+		slug: {
+			invalid: 'That company identifier is not valid.',
+		},
 		token: {
 			invalid: 'Invalid code.',
 		},

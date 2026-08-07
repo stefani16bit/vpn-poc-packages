@@ -15,6 +15,18 @@ export const passwordSchema = z
 	.min(12, 'validation.password.tooShort')
 	.max(200, 'validation.password.tooLong');
 
+export const slugSchema = z
+	.string()
+	.trim()
+	.toLowerCase()
+	.min(2, 'validation.slug.invalid')
+	.max(63, 'validation.slug.invalid')
+	.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'validation.slug.invalid');
+
+export const USER_ROLES = ['owner', 'admin', 'member'] as const;
+export const roleSchema = z.enum(USER_ROLES);
+export type UserRole = z.infer<typeof roleSchema>;
+
 export const registerRequestSchema = z.object({
 	email: emailSchema,
 	password: passwordSchema,
@@ -25,6 +37,7 @@ export type RegisterRequest = z.infer<typeof registerRequestSchema>;
 export const loginRequestSchema = z.object({
 	email: emailSchema,
 	password: z.string().min(1, 'validation.password.required'),
+	slug: slugSchema.optional(),
 });
 export type LoginRequest = z.infer<typeof loginRequestSchema>;
 
@@ -51,6 +64,8 @@ export type ResetPasswordRequest = z.infer<typeof resetPasswordRequestSchema>;
 
 export const authenticatedUserSchema = z.object({
 	id: z.string().uuid(),
+	accountId: z.string().uuid(),
+	role: roleSchema,
 	email: z.string().email(),
 	emailVerified: z.boolean(),
 	locale: localeSchema,

@@ -4,15 +4,6 @@ export { CLOCK } from './IClock.js';
 export type { ICacheStore, CacheKey } from './ICacheStore.js';
 export { CACHE_STORE } from './ICacheStore.js';
 
-export type {
-	IIdentityProvider,
-	Account,
-	Session,
-	RegisterOutcome,
-	RefreshOutcome,
-} from './IIdentityProvider.js';
-export { IDENTITY_PROVIDER } from './IIdentityProvider.js';
-
 export type { IPasswordHasher } from './IPasswordHasher.js';
 export { PASSWORD_HASHER } from './IPasswordHasher.js';
 
