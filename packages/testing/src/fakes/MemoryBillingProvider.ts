@@ -44,9 +44,10 @@ export class MemoryBillingProvider implements IBillingProvider {
 		const cached = this.#checkoutsByKey.get(request.idempotencyKey);
 		if (cached) return cached;
 
+		const externalId = `cs_${randomUUID()}`;
 		const session: CheckoutSession = {
-			externalId: `cs_${randomUUID()}`,
-			url: `memory://checkout/${request.priceId}`,
+			externalId,
+			url: `${request.successUrl}?checkout=${externalId}&price=${request.priceId}`,
 		};
 		this.#checkoutsByKey.set(request.idempotencyKey, session);
 		this.#accountByCheckout.set(session.externalId, request.accountId);

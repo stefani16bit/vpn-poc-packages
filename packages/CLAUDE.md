@@ -27,6 +27,15 @@ a copy não é). `testing` depende de `ports`.
 um mapped type derivado dele, então `en.ts` não compila se faltar uma chave.
 O teste de paridade em runtime cobre o inverso (chave a mais) e chave vazia.
 
+## Decisões dentro de um fake
+
+**`MemoryBillingProvider.createCheckout` devolve a `successUrl` que recebeu**, com
+a sessão e o preço na query, em vez de um `memory://`. O fake é também o driver
+`memory` que roda em desenvolvimento, e um esquema que nenhum navegador abre
+transforma o botão de assinar em nada. A suíte de conformidade só exige que a URL
+exista; o preço fica na query porque é por ele que o e2e prova que a seleção
+mensal/anual chegou ao provider. Ver DEC-056.
+
 ## Fluxo de mudança
 
 ```
