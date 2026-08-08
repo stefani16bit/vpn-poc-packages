@@ -77,6 +77,11 @@ export const en: LocaleMessages = {
 		subscribeMonthly: 'Subscribe monthly',
 		subscribeYearly: 'Subscribe yearly',
 		cancel: 'Cancel subscription',
+		planTitle: 'The plan includes',
+		seats: '{{count}} users',
+		devicesPerUser: '{{count}} devices per user',
+		monthlyTrafficGb: '{{count}} GB of traffic per month',
+		regions: 'Regions: {{regions}}',
 		status: {
 			none: 'No subscription',
 			active: 'Active',

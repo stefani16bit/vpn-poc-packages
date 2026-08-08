@@ -75,6 +75,11 @@ export const ptBR = {
 		subscribeMonthly: 'Assinar mensal',
 		subscribeYearly: 'Assinar anual',
 		cancel: 'Cancelar assinatura',
+		planTitle: 'O plano inclui',
+		seats: '{{count}} usuários',
+		devicesPerUser: '{{count}} dispositivos por usuário',
+		monthlyTrafficGb: '{{count}} GB de tráfego por mês',
+		regions: 'Regiões: {{regions}}',
 		status: {
 			none: 'Sem assinatura',
 			active: 'Ativa',
