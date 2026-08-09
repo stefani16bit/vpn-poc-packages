@@ -113,6 +113,34 @@ export const en: LocaleMessages = {
 		},
 	},
 
+	keys: {
+		title: 'Devices and keys',
+		link: 'Devices and keys',
+		intro:
+			'The private key is generated here in your browser and is never sent to us. We only store the public key.',
+		empty: 'No devices yet. Generate a key to connect the first one.',
+		nameLabel: 'Device name',
+		namePlaceholder: 'Work laptop',
+		generate: 'Generate key and download configuration',
+		downloadAgain: 'Download again',
+		downloadWarning:
+			'This file holds the private key and can only be downloaded now. If you lose it, generate a new key — the old one stops working.',
+		downloaded: 'Configuration downloaded. Import the file into your WireGuard client.',
+		pending: 'Opening access on the server…',
+		pendingHelp: 'The tunnel starts answering as soon as this finishes.',
+		active: 'Active',
+		createdAt: 'Created on {{date}}',
+		address: 'Tunnel address',
+		revoke: 'Revoke',
+		revokeConfirmTitle: 'Revoke this device?',
+		revokeConfirmBody:
+			'The configuration for {{name}} stops connecting immediately. This cannot be undone — you would have to generate a new key.',
+		revokeConfirmAccept: 'Yes, revoke',
+		revokeConfirmDismiss: 'Keep device',
+		unsupported:
+			'This browser cannot generate X25519 keys. Update it or use another one to create a device.',
+	},
+
 	email: {
 		verify_email: {
 			subject: 'Confirm your e-mail',
@@ -179,6 +207,13 @@ export const en: LocaleMessages = {
 		},
 		locale: {
 			unsupported: 'Unsupported language.',
+		},
+		publicKey: {
+			invalid: 'That is not a valid WireGuard public key.',
+		},
+		deviceName: {
+			required: 'Give this device a name.',
+			tooLong: 'The name can be at most 60 characters.',
 		},
 	},
 

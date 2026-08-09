@@ -7,3 +7,5 @@ export { MemoryObjectStorage } from './MemoryObjectStorage.js';
 export { MemoryBillingProvider } from './MemoryBillingProvider.js';
 export { MemoryJobQueue } from './MemoryJobQueue.js';
 export type { MemoryJobQueueOptions } from './MemoryJobQueue.js';
+export { MemoryExitNode } from './MemoryExitNode.js';
+export type { MemoryExitNodeOptions } from './MemoryExitNode.js';

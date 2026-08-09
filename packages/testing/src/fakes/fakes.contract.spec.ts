@@ -4,6 +4,7 @@ import {
 	describeBillingProviderContract,
 	describeCacheStoreContract,
 	describeEmailSenderContract,
+	describeExitNodeContract,
 	describeObjectStorageContract,
 	describePasswordHasherContract,
 	describeJobQueueContract,
@@ -14,6 +15,7 @@ import { FixedClock } from './FixedClock.js';
 import { MemoryBillingProvider } from './MemoryBillingProvider.js';
 import { MemoryCacheStore, flattenCacheKey } from './MemoryCacheStore.js';
 import { MemoryEmailSender } from './MemoryEmailSender.js';
+import { MemoryExitNode } from './MemoryExitNode.js';
 import { MemoryObjectStorage } from './MemoryObjectStorage.js';
 import { MemoryJobQueue } from './MemoryJobQueue.js';
 import { MemorySmsSender } from './MemorySmsSender.js';
@@ -55,6 +57,8 @@ describeJobQueueContract('MemoryJobQueue', () => {
 	const queue = new MemoryJobQueue(new FixedClock());
 	return { queue, expire: () => queue.makeEverythingVisible() };
 });
+
+describeExitNodeContract('MemoryExitNode', () => ({ node: new MemoryExitNode() }));
 
 describe('flattenCacheKey', () => {
 	it('renders a null owner as an explicit segment', () => {

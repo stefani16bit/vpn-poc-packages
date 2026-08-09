@@ -16,3 +16,6 @@ export type { BillingProviderHarness, SignedWebhook } from './billing-provider.c
 
 export { describeJobQueueContract } from './job-queue.contract.js';
 export type { JobQueueHarness } from './job-queue.contract.js';
+
+export { describeExitNodeContract } from './exit-node.contract.js';
+export type { ExitNodeHarness } from './exit-node.contract.js';

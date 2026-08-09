@@ -1,27 +1,27 @@
 {
-  "name": "@vpn/i18n",
-  "version": "0.9.0",
-  "description": "Locales, locale negotiation and the translator shared by the API and the web app.",
-  "license": "UNLICENSED",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
-  "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "typecheck": "tsc -p tsconfig.build.json --noEmit",
-    "test": "vitest run"
-  },
-  "devDependencies": {
-    "@vpn/config": "workspace:*"
-  },
-  "dependencies": {
-    "@vpn/contracts": "workspace:*"
-  }
+	"name": "@vpn/i18n",
+	"version": "0.10.0",
+	"description": "Locales, locale negotiation and the translator shared by the API and the web app.",
+	"license": "UNLICENSED",
+	"type": "module",
+	"files": [
+		"dist"
+	],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"typecheck": "tsc -p tsconfig.build.json --noEmit",
+		"test": "vitest run"
+	},
+	"devDependencies": {
+		"@vpn/config": "workspace:*"
+	},
+	"dependencies": {
+		"@vpn/contracts": "workspace:*"
+	}
 }

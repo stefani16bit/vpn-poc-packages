@@ -31,3 +31,6 @@ export { ERROR_REPORTER } from './IErrorReporter.js';
 
 export type { IJobQueue, JobEnvelope, ReceivedJob, ReceiveOptions } from './IJobQueue.js';
 export { JOB_QUEUE } from './IJobQueue.js';
+
+export type { IExitNode, PeerSpec, ExitNodeDescription } from './IExitNode.js';
+export { EXIT_NODE } from './IExitNode.js';

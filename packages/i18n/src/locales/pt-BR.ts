@@ -113,6 +113,34 @@ export const ptBR = {
 		},
 	},
 
+	keys: {
+		title: 'Dispositivos e chaves',
+		link: 'Dispositivos e chaves',
+		intro:
+			'A chave privada é gerada aqui no seu navegador e nunca é enviada para nós. Guardamos apenas a chave pública.',
+		empty: 'Nenhum dispositivo ainda. Gere uma chave para conectar o primeiro.',
+		nameLabel: 'Nome do dispositivo',
+		namePlaceholder: 'Notebook do trabalho',
+		generate: 'Gerar chave e baixar configuração',
+		downloadAgain: 'Baixar de novo',
+		downloadWarning:
+			'Este arquivo contém a chave privada e só pode ser baixado agora. Se você perdê-lo, gere uma chave nova — a antiga deixa de valer.',
+		downloaded: 'Configuração baixada. Importe o arquivo no cliente WireGuard.',
+		pending: 'Liberando o acesso no servidor…',
+		pendingHelp: 'O túnel começa a responder assim que isso terminar.',
+		active: 'Ativo',
+		createdAt: 'Criado em {{date}}',
+		address: 'Endereço no túnel',
+		revoke: 'Revogar',
+		revokeConfirmTitle: 'Revogar este dispositivo?',
+		revokeConfirmBody:
+			'A configuração de {{name}} deixa de conectar imediatamente. Não dá para desfazer — seria preciso gerar uma chave nova.',
+		revokeConfirmAccept: 'Sim, revogar',
+		revokeConfirmDismiss: 'Manter dispositivo',
+		unsupported:
+			'Este navegador não sabe gerar chaves X25519. Atualize-o ou use outro para criar um dispositivo.',
+	},
+
 	email: {
 		verify_email: {
 			subject: 'Confirme seu e-mail',
@@ -179,6 +207,13 @@ export const ptBR = {
 		},
 		locale: {
 			unsupported: 'Idioma não suportado.',
+		},
+		publicKey: {
+			invalid: 'Esta não é uma chave pública WireGuard válida.',
+		},
+		deviceName: {
+			required: 'Dê um nome a este dispositivo.',
+			tooLong: 'O nome pode ter no máximo 60 caracteres.',
 		},
 	},
 
