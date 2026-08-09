@@ -10,6 +10,7 @@ export interface SignedWebhook {
 
 export interface BillingProviderHarness {
 	readonly provider: IBillingProvider;
+	activeSubscription(accountId: string): Promise<string> | string;
 	activationWebhook(accountId: string): Promise<SignedWebhook> | SignedWebhook;
 	unknownEventWebhook(): Promise<SignedWebhook> | SignedWebhook;
 }
@@ -56,6 +57,49 @@ export function describeBillingProviderContract(
 				const first = await provider.createCheckout(checkout({ idempotencyKey: 'a' }));
 				const second = await provider.createCheckout(checkout({ idempotencyKey: 'b' }));
 				expect(second.externalId).not.toBe(first.externalId);
+			});
+		});
+
+		describe('cancellation and resume', () => {
+			it('schedules the end without ending access now', async () => {
+				const externalId = await harness.activeSubscription('account-1');
+
+				const updated = await provider.cancelSubscription(externalId, 'period_end');
+
+				expect(updated.cancelAtPeriodEnd).toBe(true);
+				expect(updated.status).not.toBe('canceled');
+			});
+
+			it('clears the schedule when the subscription is resumed', async () => {
+				const externalId = await harness.activeSubscription('account-1');
+				await provider.cancelSubscription(externalId, 'period_end');
+
+				const updated = await provider.resumeSubscription(externalId);
+
+				expect(updated.cancelAtPeriodEnd).toBe(false);
+				expect(updated.status).not.toBe('canceled');
+			});
+
+			it('resumes a subscription that was never scheduled to end, without complaining', async () => {
+				const externalId = await harness.activeSubscription('account-1');
+
+				const updated = await provider.resumeSubscription(externalId);
+
+				expect(updated.cancelAtPeriodEnd).toBe(false);
+			});
+
+			it('reports the same state a read-back reports', async () => {
+				const externalId = await harness.activeSubscription('account-1');
+				const updated = await provider.cancelSubscription(externalId, 'period_end');
+
+				expect(await provider.getSubscription(externalId)).toMatchObject({
+					cancelAtPeriodEnd: updated.cancelAtPeriodEnd,
+					status: updated.status,
+				});
+			});
+
+			it('rejects resuming a subscription it does not know', async () => {
+				await expect(provider.resumeSubscription('sub_absent')).rejects.toThrow();
 			});
 		});
 

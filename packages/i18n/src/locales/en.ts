@@ -77,6 +77,11 @@ export const en: LocaleMessages = {
 		subscribeMonthly: 'Subscribe monthly',
 		subscribeYearly: 'Subscribe yearly',
 		cancel: 'Cancel subscription',
+		cancelConfirmTitle: 'Cancel your subscription?',
+		cancelConfirmBody: 'Access continues until {{date}}. After that the account loses the Pro plan.',
+		cancelConfirmAccept: 'Yes, cancel',
+		cancelConfirmDismiss: 'Keep my subscription',
+		resume: 'Resume subscription',
 		planTitle: 'The plan includes',
 		seats: '{{count}} users',
 		devicesPerUser: '{{count}} devices per user',
@@ -89,6 +94,22 @@ export const en: LocaleMessages = {
 			past_due: 'Payment pending',
 			canceled: 'Canceled',
 			incomplete: 'Awaiting payment confirmation',
+		},
+		tier: {
+			pro: 'Pro',
+		},
+		backToAccount: 'Back to your account',
+		checkoutSuccess: {
+			receivedTitle: 'Payment received',
+			activating: 'We are activating your subscription.',
+			stillProcessing: 'Activation is still being processed. This usually takes a few seconds.',
+			checkAgain: 'Check again',
+			activeTitle: 'Subscription active',
+			activeBody: 'Your account is on the {{tier}} plan.',
+		},
+		checkoutCancel: {
+			title: 'Nothing was charged',
+			body: 'You left the checkout before finishing. Your subscription has not changed.',
 		},
 	},
 
@@ -113,9 +134,25 @@ export const en: LocaleMessages = {
 			subject: 'We could not process your payment',
 			body: 'The charge for your subscription failed.\n\nUpdate your payment method at:\n{{url}}',
 		},
+		subscription_activated: {
+			subject: 'Your subscription is active',
+			body: 'Your subscription is active and access is already unlocked.\n\nThe details are at:\n{{url}}',
+		},
+		subscription_cancel_scheduled: {
+			subject: 'Your cancellation is scheduled',
+			body: 'Your subscription was canceled and access continues until {{endsAt}}.\n\nChanged your mind? Resume it at:\n{{url}}',
+		},
+		subscription_resumed: {
+			subject: 'Your subscription is still active',
+			body: 'The cancellation was undone and your subscription will keep renewing.\n\nThe details are at:\n{{url}}',
+		},
 		subscription_canceled: {
 			subject: 'Subscription canceled',
-			body: 'Your subscription was canceled and access continues until {{endsAt}}.',
+			body: 'Your subscription was canceled and access to the plan has ended.\n\nTo come back, subscribe again at:\n{{url}}',
+		},
+		access_revoked: {
+			subject: 'Your access is suspended',
+			body: 'We could not keep your subscription up to date, and access to the plan is suspended.\n\nSettle the payment to get it back at:\n{{url}}',
 		},
 	},
 

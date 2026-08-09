@@ -70,6 +70,15 @@ export class MemoryBillingProvider implements IBillingProvider {
 		return updated;
 	}
 
+	async resumeSubscription(externalId: string): Promise<Subscription> {
+		const existing = this.#subscriptions.get(externalId);
+		if (!existing) throw new Error(`unknown subscription: ${externalId}`);
+
+		const updated: Subscription = { ...existing, cancelAtPeriodEnd: false };
+		this.#subscriptions.set(externalId, updated);
+		return updated;
+	}
+
 	verifyWebhookSignature(rawBody: string, signatureHeader: string): boolean {
 		return signatureHeader === this.#signature(rawBody);
 	}

@@ -66,7 +66,11 @@ export function describeEmailSenderContract(
 				'password_changed',
 				'welcome',
 				'payment_failed',
+				'subscription_activated',
+				'subscription_cancel_scheduled',
+				'subscription_resumed',
 				'subscription_canceled',
+				'access_revoked',
 			];
 			for (const [index, template] of templates.entries()) {
 				await harness.sender.send(message({ template, idempotencyKey: `t-${index}` }));

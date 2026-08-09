@@ -75,6 +75,12 @@ export const ptBR = {
 		subscribeMonthly: 'Assinar mensal',
 		subscribeYearly: 'Assinar anual',
 		cancel: 'Cancelar assinatura',
+		cancelConfirmTitle: 'Cancelar sua assinatura?',
+		cancelConfirmBody:
+			'O acesso continua até {{date}}. Depois disso a conta perde o plano Pro.',
+		cancelConfirmAccept: 'Sim, cancelar',
+		cancelConfirmDismiss: 'Manter assinatura',
+		resume: 'Retomar assinatura',
 		planTitle: 'O plano inclui',
 		seats: '{{count}} usuários',
 		devicesPerUser: '{{count}} dispositivos por usuário',
@@ -87,6 +93,23 @@ export const ptBR = {
 			past_due: 'Pagamento pendente',
 			canceled: 'Cancelada',
 			incomplete: 'Aguardando confirmação do pagamento',
+		},
+		tier: {
+			pro: 'Pro',
+		},
+		backToAccount: 'Voltar para sua conta',
+		checkoutSuccess: {
+			receivedTitle: 'Pagamento recebido',
+			activating: 'Estamos ativando sua assinatura.',
+			stillProcessing:
+				'A ativação ainda está sendo processada. Isso costuma levar alguns segundos.',
+			checkAgain: 'Verificar de novo',
+			activeTitle: 'Assinatura ativa',
+			activeBody: 'Sua conta está no plano {{tier}}.',
+		},
+		checkoutCancel: {
+			title: 'Nada foi cobrado',
+			body: 'Você saiu do checkout antes de concluir. Sua assinatura não mudou.',
 		},
 	},
 
@@ -111,9 +134,25 @@ export const ptBR = {
 			subject: 'Não conseguimos processar seu pagamento',
 			body: 'A cobrança da sua assinatura falhou.\n\nAtualize seu meio de pagamento em:\n{{url}}',
 		},
+		subscription_activated: {
+			subject: 'Sua assinatura está ativa',
+			body: 'Sua assinatura foi ativada e o acesso já está liberado.\n\nOs detalhes estão em:\n{{url}}',
+		},
+		subscription_cancel_scheduled: {
+			subject: 'Seu cancelamento foi agendado',
+			body: 'Sua assinatura foi cancelada e o acesso continua até {{endsAt}}.\n\nMudou de ideia? Retome em:\n{{url}}',
+		},
+		subscription_resumed: {
+			subject: 'Sua assinatura continua ativa',
+			body: 'O cancelamento foi desfeito e sua assinatura volta a renovar normalmente.\n\nOs detalhes estão em:\n{{url}}',
+		},
 		subscription_canceled: {
 			subject: 'Assinatura cancelada',
-			body: 'Sua assinatura foi cancelada e o acesso continua até {{endsAt}}.',
+			body: 'Sua assinatura foi cancelada e o acesso ao plano terminou.\n\nPara voltar, assine de novo em:\n{{url}}',
+		},
+		access_revoked: {
+			subject: 'Seu acesso foi suspenso',
+			body: 'Não conseguimos manter sua assinatura em dia, e o acesso ao plano foi suspenso.\n\nRegularize o pagamento para recuperá-lo em:\n{{url}}',
 		},
 	},
 

@@ -4,7 +4,11 @@ export type EmailTemplate =
 	| 'password_changed'
 	| 'welcome'
 	| 'payment_failed'
-	| 'subscription_canceled';
+	| 'subscription_activated'
+	| 'subscription_cancel_scheduled'
+	| 'subscription_resumed'
+	| 'subscription_canceled'
+	| 'access_revoked';
 
 export interface EmailMessage {
 	readonly to: string;

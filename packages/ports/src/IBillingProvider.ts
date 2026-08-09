@@ -61,6 +61,7 @@ export interface IBillingProvider {
 	createCheckout(request: CheckoutRequest): Promise<CheckoutSession>;
 	getSubscription(externalId: string): Promise<Subscription | null>;
 	cancelSubscription(externalId: string, when: 'now' | 'period_end'): Promise<Subscription>;
+	resumeSubscription(externalId: string): Promise<Subscription>;
 
 	verifyWebhookSignature(rawBody: string, signatureHeader: string): boolean;
 	parseWebhookEvent(rawBody: string): NormalizedBillingEvent | null;

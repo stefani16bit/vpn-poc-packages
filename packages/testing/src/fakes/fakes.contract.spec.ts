@@ -41,6 +41,8 @@ describeBillingProviderContract('MemoryBillingProvider', () => {
 	const provider = new MemoryBillingProvider(new FixedClock());
 	return {
 		provider,
+		activeSubscription: (accountId) =>
+			provider.seedSubscription(`sub_${accountId}`, accountId).externalId,
 		activationWebhook: (accountId) =>
 			provider.emit('subscription_activated', accountId, {
 				subscription: provider.seedSubscription(`sub_${accountId}`, accountId),
@@ -117,6 +119,24 @@ describe('MemoryBillingProvider', () => {
 	it('throws for an unknown subscription', async () => {
 		const provider = new MemoryBillingProvider(new FixedClock());
 		await expect(provider.cancelSubscription('sub_absent', 'now')).rejects.toThrow();
+	});
+
+	it('keeps the period end and the customer when a schedule is undone', async () => {
+		const provider = new MemoryBillingProvider(new FixedClock());
+		const seeded = provider.seedSubscription('sub_1', 'account-1');
+		await provider.cancelSubscription('sub_1', 'period_end');
+
+		const resumed = await provider.resumeSubscription('sub_1');
+
+		expect(resumed).toEqual({ ...seeded, cancelAtPeriodEnd: false });
+	});
+
+	it('leaves a hard cancellation cancelled when it is resumed', async () => {
+		const provider = new MemoryBillingProvider(new FixedClock());
+		provider.seedSubscription('sub_1', 'account-1');
+		await provider.cancelSubscription('sub_1', 'now');
+
+		expect((await provider.resumeSubscription('sub_1')).status).toBe('canceled');
 	});
 
 	it('reports a payment failure with the customer it belongs to', () => {
