@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import type { IExitNode } from '@vpn/ports';
 
@@ -6,14 +6,16 @@ export interface ExitNodeHarness {
 	readonly node: IExitNode;
 }
 
+// Throwaway keys that belong to this suite alone. A real node is shared state,
+// and reusing a key some devstack fixture seeded would revoke a live tunnel.
 const ADA = {
-	publicKey: 'StZtsGF+hrd7nHOYtH0GhM/759qnBuUbKdVMEeFyLVU=',
-	tunnelAddress: '10.13.13.2/32',
+	publicKey: 'hslPZ8OuAwL0RUaJPhxCw+XqWYgfm4ud70Y2FRzjaCM=',
+	tunnelAddress: '10.13.13.202/32',
 } as const;
 
 const GRACE = {
-	publicKey: 'kEr1nQ1cRPOLlAcHXBg0aJ3g6mHnMBQ8OQqbOTXjaXA=',
-	tunnelAddress: '10.13.13.3/32',
+	publicKey: 'iNzK8AwMwfCghBcaNNdc8zgw63whVqeXAhRLUNg/gUk=',
+	tunnelAddress: '10.13.13.203/32',
 } as const;
 
 export function describeExitNodeContract(
@@ -25,6 +27,13 @@ export function describeExitNodeContract(
 
 		beforeEach(async () => {
 			({ node } = await createHarness());
+			await node.revokePeer(ADA.publicKey);
+			await node.revokePeer(GRACE.publicKey);
+		});
+
+		afterEach(async () => {
+			await node.revokePeer(ADA.publicKey);
+			await node.revokePeer(GRACE.publicKey);
 		});
 
 		it('describes itself with a public key a client can dial', async () => {
