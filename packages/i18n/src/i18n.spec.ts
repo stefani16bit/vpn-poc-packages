@@ -150,7 +150,18 @@ describe('locale message shape', () => {
 	it('keeps the fallback locale as the structural source of truth', () => {
 		const reference: LocaleMessages = RESOURCES[FALLBACK_LOCALE];
 		expect(Object.keys(reference).sort()).toEqual(
-			['auth', 'billing', 'common', 'email', 'errors', 'keys', 'sms', 'validation'].sort(),
+			[
+				'auth',
+				'billing',
+				'common',
+				'email',
+				'errors',
+				'keys',
+				'servers',
+				'sms',
+				'users',
+				'validation',
+			].sort(),
 		);
 	});
 });

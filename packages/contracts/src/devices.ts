@@ -32,21 +32,26 @@ export const deviceSchema = z.object({
 });
 export type Device = z.infer<typeof deviceSchema>;
 
-export const exitNodeSchema = z.object({
+export const exitNodeViewSchema = z.object({
 	publicKey: publicKeySchema,
 	endpoint: z.string(),
 	allowedIps: z.array(z.string()).min(1),
 });
-export type ExitNodeView = z.infer<typeof exitNodeSchema>;
+export type ExitNodeView = z.infer<typeof exitNodeViewSchema>;
+
+// The node travels with each device rather than beside the list: two devices of
+// the same user can sit on different nodes once a tenant registers a fleet.
+export const deviceWithNodeSchema = deviceSchema.extend({
+	node: exitNodeViewSchema,
+});
+export type DeviceWithNode = z.infer<typeof deviceWithNodeSchema>;
 
 export const deviceListResponseSchema = z.object({
-	devices: z.array(deviceSchema),
-	node: exitNodeSchema,
+	devices: z.array(deviceWithNodeSchema),
 });
 export type DeviceListResponse = z.infer<typeof deviceListResponseSchema>;
 
 export const createDeviceResponseSchema = z.object({
-	device: deviceSchema,
-	node: exitNodeSchema,
+	device: deviceWithNodeSchema,
 });
 export type CreateDeviceResponse = z.infer<typeof createDeviceResponseSchema>;

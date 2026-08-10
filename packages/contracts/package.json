@@ -1,6 +1,6 @@
 {
   "name": "@vpn/contracts",
-  "version": "0.8.0",
+  "version": "0.10.0",
   "description": "Request/response schemas and error codes shared by the API and the web app.",
   "license": "UNLICENSED",
   "type": "module",

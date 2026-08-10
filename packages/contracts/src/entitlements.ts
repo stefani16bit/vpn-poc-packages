@@ -6,16 +6,13 @@ export const CAPABILITIES = ['vpn_access'] as const;
 export const capabilitySchema = z.enum(CAPABILITIES);
 export type Capability = z.infer<typeof capabilitySchema>;
 
-export const REGIONS = ['us', 'eu'] as const;
-export const regionSchema = z.enum(REGIONS);
-export type Region = z.infer<typeof regionSchema>;
-
 export const entitlementsSchema = z.object({
 	capabilities: z.array(capabilitySchema),
 	seats: z.number().int().nonnegative(),
 	devicesPerUser: z.number().int().nonnegative(),
 	monthlyTrafficGb: z.number().int().nonnegative(),
-	regions: z.array(regionSchema),
+	// how many regions the tenant may name, not which ones — DEC-078
+	regions: z.number().int().nonnegative(),
 });
 export type Entitlements = z.infer<typeof entitlementsSchema>;
 
@@ -25,7 +22,7 @@ export const ENTITLEMENTS: Record<TierId, Entitlements> = {
 		seats: 25,
 		devicesPerUser: 5,
 		monthlyTrafficGb: 500,
-		regions: ['us', 'eu'],
+		regions: 2,
 	},
 };
 
@@ -34,7 +31,7 @@ export const UNSUBSCRIBED_ENTITLEMENTS: Entitlements = {
 	seats: 1,
 	devicesPerUser: 0,
 	monthlyTrafficGb: 0,
-	regions: [],
+	regions: 0,
 };
 
 const SOLE_TIER: TierId = 'pro';

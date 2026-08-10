@@ -4,3 +4,6 @@ export * from './auth.js';
 export * from './billing.js';
 export * from './entitlements.js';
 export * from './devices.js';
+export * from './users.js';
+export * from './regions.js';
+export * from './exit-nodes.js';
