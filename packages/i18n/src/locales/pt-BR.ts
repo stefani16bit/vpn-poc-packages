@@ -120,7 +120,6 @@ export const ptBR = {
 		nameLabel: 'Nome do dispositivo',
 		namePlaceholder: 'Notebook do trabalho',
 		generate: 'Gerar chave e baixar configuração',
-		downloadAgain: 'Baixar de novo',
 		downloadWarning:
 			'Este arquivo contém a chave privada e só pode ser baixado agora. Se você perdê-lo, gere uma chave nova — a antiga deixa de valer.',
 		downloaded: 'Configuração baixada. Importe o arquivo no cliente WireGuard.',
@@ -129,12 +128,16 @@ export const ptBR = {
 		active: 'Ativo',
 		createdAt: 'Criado em {{date}}',
 		address: 'Endereço no túnel',
+		ownedBy: 'De {{email}}',
 		revoke: 'Revogar',
 		revokeConfirmTitle: 'Revogar este dispositivo?',
 		revokeConfirmBody:
-			'A configuração de {{name}} deixa de conectar imediatamente. Não dá para desfazer — seria preciso gerar uma chave nova.',
+			'A configuração de {{name}} para de conectar em instantes. Não dá para desfazer — seria preciso gerar uma chave nova.',
+		revokeClientWarning:
+			'O WireGuard no computador continua marcando o túnel como ativo depois disso, e descarta tudo em silêncio. Apague o túnel no aplicativo — ele não some sozinho.',
 		revokeConfirmAccept: 'Sim, revogar',
 		revokeConfirmDismiss: 'Manter dispositivo',
+		revoked: 'Dispositivo revogado.',
 		unsupported:
 			'Este navegador não sabe gerar chaves X25519. Atualize-o ou use outro para criar um dispositivo.',
 	},

@@ -25,6 +25,8 @@ export const deviceSchema = z.object({
 	name: deviceNameSchema,
 	publicKey: publicKeySchema,
 	tunnelAddress: z.string(),
+	userId: z.string().uuid(),
+	userEmail: z.string(),
 	provisionedAt: z.string().datetime().nullable(),
 	createdAt: z.string().datetime(),
 });

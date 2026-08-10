@@ -15,7 +15,7 @@
     "verify": "pnpm format:check && pnpm typecheck && pnpm test",
     "changeset": "changeset",
     "version:local": "changeset version",
-    "publish:local": "pnpm build && pnpm -r --filter './packages/*' publish --registry http://localhost:24873 --no-git-checks --access public",
+    "publish:local": "pnpm build && pnpm -r publish --registry http://localhost:24873 --no-git-checks --access public",
     "consumer-check": "sh tools/consumer-check/run.sh"
   },
   "devDependencies": {

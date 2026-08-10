@@ -36,11 +36,7 @@ export class MemoryExitNode implements IExitNode {
 		this.#peers.delete(publicKey);
 	}
 
-	async listPeers(): Promise<readonly string[]> {
-		return [...this.#peers.keys()];
-	}
-
-	addressOf(publicKey: string): string | undefined {
-		return this.#peers.get(publicKey);
+	async listPeers(): Promise<readonly PeerSpec[]> {
+		return [...this.#peers].map(([publicKey, tunnelAddress]) => ({ publicKey, tunnelAddress }));
 	}
 }

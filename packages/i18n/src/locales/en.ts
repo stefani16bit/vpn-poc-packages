@@ -123,7 +123,6 @@ export const en: LocaleMessages = {
 		nameLabel: 'Device name',
 		namePlaceholder: 'Work laptop',
 		generate: 'Generate key and download configuration',
-		downloadAgain: 'Download again',
 		downloadWarning:
 			'This file holds the private key and can only be downloaded now. If you lose it, generate a new key — the old one stops working.',
 		downloaded: 'Configuration downloaded. Import the file into your WireGuard client.',
@@ -132,12 +131,16 @@ export const en: LocaleMessages = {
 		active: 'Active',
 		createdAt: 'Created on {{date}}',
 		address: 'Tunnel address',
+		ownedBy: 'Belongs to {{email}}',
 		revoke: 'Revoke',
 		revokeConfirmTitle: 'Revoke this device?',
 		revokeConfirmBody:
-			'The configuration for {{name}} stops connecting immediately. This cannot be undone — you would have to generate a new key.',
+			'The configuration for {{name}} stops connecting in a moment. This cannot be undone — you would have to generate a new key.',
+		revokeClientWarning:
+			'WireGuard on that computer will still show the tunnel as up afterwards, and will drop everything in silence. Delete the tunnel in the app — it does not go away on its own.',
 		revokeConfirmAccept: 'Yes, revoke',
 		revokeConfirmDismiss: 'Keep device',
+		revoked: 'Device revoked.',
 		unsupported:
 			'This browser cannot generate X25519 keys. Update it or use another one to create a device.',
 	},

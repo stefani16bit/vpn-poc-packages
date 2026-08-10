@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import type { IExitNode } from '@vpn/ports';
+import type { IExitNode, PeerSpec } from '@vpn/ports';
 
 export interface ExitNodeHarness {
 	readonly node: IExitNode;
@@ -53,27 +53,33 @@ export function describeExitNodeContract(
 		it('lists a peer once it is provisioned', async () => {
 			await node.provisionPeer(ADA);
 
-			expect(await node.listPeers()).toContain(ADA.publicKey);
+			expect(keysOf(await node.listPeers())).toContain(ADA.publicKey);
+		});
+
+		it('reports the address a peer was provisioned with', async () => {
+			await node.provisionPeer(ADA);
+
+			expect(await node.listPeers()).toContainEqual(ADA);
 		});
 
 		it('lists nothing before anything is provisioned', async () => {
-			expect(await node.listPeers()).not.toContain(ADA.publicKey);
+			expect(keysOf(await node.listPeers())).not.toContain(ADA.publicKey);
 		});
 
 		it('converges when the same peer is provisioned twice', async () => {
 			await node.provisionPeer(ADA);
 			await node.provisionPeer(ADA);
 
-			const peers = await node.listPeers();
-			expect(peers.filter((key) => key === ADA.publicKey)).toHaveLength(1);
+			expect(keysOf(await node.listPeers()).filter((key) => key === ADA.publicKey)).toHaveLength(1);
 		});
 
 		it('moves a peer to a new address rather than keeping both', async () => {
+			const moved = { ...ADA, tunnelAddress: '10.13.13.9/32' };
 			await node.provisionPeer(ADA);
-			await node.provisionPeer({ ...ADA, tunnelAddress: '10.13.13.9/32' });
+			await node.provisionPeer(moved);
 
 			const peers = await node.listPeers();
-			expect(peers.filter((key) => key === ADA.publicKey)).toHaveLength(1);
+			expect(peers.filter((peer) => peer.publicKey === ADA.publicKey)).toEqual([moved]);
 		});
 
 		it('keeps two peers apart', async () => {
@@ -81,15 +87,15 @@ export function describeExitNodeContract(
 			await node.provisionPeer(GRACE);
 
 			const peers = await node.listPeers();
-			expect(peers).toContain(ADA.publicKey);
-			expect(peers).toContain(GRACE.publicKey);
+			expect(peers).toContainEqual(ADA);
+			expect(peers).toContainEqual(GRACE);
 		});
 
 		it('stops listing a peer once it is revoked', async () => {
 			await node.provisionPeer(ADA);
 			await node.revokePeer(ADA.publicKey);
 
-			expect(await node.listPeers()).not.toContain(ADA.publicKey);
+			expect(keysOf(await node.listPeers())).not.toContain(ADA.publicKey);
 		});
 
 		it('leaves the other peers alone when one is revoked', async () => {
@@ -97,7 +103,7 @@ export function describeExitNodeContract(
 			await node.provisionPeer(GRACE);
 			await node.revokePeer(ADA.publicKey);
 
-			expect(await node.listPeers()).toContain(GRACE.publicKey);
+			expect(keysOf(await node.listPeers())).toContain(GRACE.publicKey);
 		});
 
 		it('treats revoking an absent peer as a success, because a retry must be safe', async () => {
@@ -116,7 +122,11 @@ export function describeExitNodeContract(
 			await node.revokePeer(ADA.publicKey);
 			await node.provisionPeer(ADA);
 
-			expect(await node.listPeers()).toContain(ADA.publicKey);
+			expect(keysOf(await node.listPeers())).toContain(ADA.publicKey);
 		});
 	});
+}
+
+function keysOf(peers: readonly PeerSpec[]): readonly string[] {
+	return peers.map((peer) => peer.publicKey);
 }
