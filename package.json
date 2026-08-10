@@ -7,10 +7,12 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "nx run-many -t build",
-    "test": "nx run-many -t test",
-    "test:agent": "cross-env NX_DAEMON=false NX_NO_CLOUD=true CI=true nx run-many -t test",
-    "typecheck": "nx run-many -t typecheck",
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "typecheck": "pnpm -r run typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "pnpm format:check && pnpm typecheck && pnpm test",
     "changeset": "changeset",
     "version:local": "changeset version",
     "publish:local": "pnpm build && pnpm -r --filter './packages/*' publish --registry http://localhost:24873 --no-git-checks --access public",
@@ -21,6 +23,7 @@
     "@types/node": "^22.10.0",
     "cross-env": "^7.0.3",
     "nx": "^22.0.0",
+    "prettier": "^3.9.6",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }

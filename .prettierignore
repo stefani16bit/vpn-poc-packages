@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.nx/
+coverage/
+pnpm-lock.yaml
+tools/consumer-check/.work/

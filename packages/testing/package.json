@@ -1,39 +1,39 @@
 {
-	"name": "@vpn/testing",
-	"version": "0.11.1",
-	"description": "Conformance suites every adapter must pass, plus the in-memory reference implementations.",
-	"license": "UNLICENSED",
-	"type": "module",
-	"files": [
-		"dist"
-	],
-	"exports": {
-		"./fakes": {
-			"types": "./dist/fakes/index.d.ts",
-			"import": "./dist/fakes/index.js"
-		},
-		"./contracts": {
-			"types": "./dist/contracts/index.d.ts",
-			"import": "./dist/contracts/index.js"
-		}
-	},
-	"scripts": {
-		"build": "tsc -p tsconfig.build.json",
-		"typecheck": "tsc -p tsconfig.build.json --noEmit",
-		"test": "vitest run"
-	},
-	"dependencies": {
-		"@vpn/ports": "workspace:*"
-	},
-	"peerDependencies": {
-		"vitest": ">=2"
-	},
-	"peerDependenciesMeta": {
-		"vitest": {
-			"optional": true
-		}
-	},
-	"devDependencies": {
-		"@vpn/config": "workspace:*"
-	}
+  "name": "@vpn/testing",
+  "version": "0.11.1",
+  "description": "Conformance suites every adapter must pass, plus the in-memory reference implementations.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./fakes": {
+      "types": "./dist/fakes/index.d.ts",
+      "import": "./dist/fakes/index.js"
+    },
+    "./contracts": {
+      "types": "./dist/contracts/index.d.ts",
+      "import": "./dist/contracts/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@vpn/ports": "workspace:*"
+  },
+  "peerDependencies": {
+    "vitest": ">=2"
+  },
+  "peerDependenciesMeta": {
+    "vitest": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@vpn/config": "workspace:*"
+  }
 }

@@ -118,9 +118,7 @@ describe('getTranslator', () => {
 	});
 
 	it('interpolates variables', () => {
-		expect(getTranslator('en')('auth.verifyEmail.resendIn', { seconds: 30 })).toBe(
-			'Resend in 30s',
-		);
+		expect(getTranslator('en')('auth.verifyEmail.resendIn', { seconds: 30 })).toBe('Resend in 30s');
 	});
 
 	it('leaves a placeholder alone when the variable is missing', () => {

@@ -147,7 +147,8 @@ export function describeBillingProviderContract(
 				const hook = await harness.activationWebhook('account-1');
 				const event = provider.parseWebhookEvent(hook.rawBody);
 
-				if (event?.kind === 'payment_failed' || !event) throw new Error('expected a subscription event');
+				if (event?.kind === 'payment_failed' || !event)
+					throw new Error('expected a subscription event');
 				expect(
 					event.subscription.currentPeriodEnd === null ||
 						event.subscription.currentPeriodEnd instanceof Date,

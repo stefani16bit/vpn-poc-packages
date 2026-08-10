@@ -31,8 +31,7 @@ export const ptBR = {
 			haveAccount: 'Já tem conta?',
 			loginLink: 'Entrar',
 			checkInboxTitle: 'Confira seu e-mail',
-			checkInboxBody:
-				'Se {{email}} puder ser cadastrado, enviamos um link de confirmação.',
+			checkInboxBody: 'Se {{email}} puder ser cadastrado, enviamos um link de confirmação.',
 			checkInboxExpiry: 'O link expira em 24 horas.',
 		},
 		verifyEmail: {
@@ -76,8 +75,7 @@ export const ptBR = {
 		subscribeYearly: 'Assinar anual',
 		cancel: 'Cancelar assinatura',
 		cancelConfirmTitle: 'Cancelar sua assinatura?',
-		cancelConfirmBody:
-			'O acesso continua até {{date}}. Depois disso a conta perde o plano Pro.',
+		cancelConfirmBody: 'O acesso continua até {{date}}. Depois disso a conta perde o plano Pro.',
 		cancelConfirmAccept: 'Sim, cancelar',
 		cancelConfirmDismiss: 'Manter assinatura',
 		resume: 'Retomar assinatura',

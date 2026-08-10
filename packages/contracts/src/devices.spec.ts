@@ -30,7 +30,8 @@ describe('publicKeySchema', () => {
 	it('reports the failure as a translation key rather than a sentence', () => {
 		const parsed = publicKeySchema.safeParse('nope');
 		expect(parsed.success).toBe(false);
-		if (!parsed.success) expect(parsed.error.issues[0]?.message).toBe('validation.publicKey.invalid');
+		if (!parsed.success)
+			expect(parsed.error.issues[0]?.message).toBe('validation.publicKey.invalid');
 	});
 });
 

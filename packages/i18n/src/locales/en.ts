@@ -78,7 +78,8 @@ export const en: LocaleMessages = {
 		subscribeYearly: 'Subscribe yearly',
 		cancel: 'Cancel subscription',
 		cancelConfirmTitle: 'Cancel your subscription?',
-		cancelConfirmBody: 'Access continues until {{date}}. After that the account loses the Pro plan.',
+		cancelConfirmBody:
+			'Access continues until {{date}}. After that the account loses the Pro plan.',
 		cancelConfirmAccept: 'Yes, cancel',
 		cancelConfirmDismiss: 'Keep my subscription',
 		resume: 'Resume subscription',

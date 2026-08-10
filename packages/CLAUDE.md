@@ -8,13 +8,13 @@ dependência declarada como dev funcionam perfeitamente dentro do workspace e
 quebram só para o consumidor — instalar do registry faz o consumidor ser a
 primeira coisa exercitada. Ver DEC-002.
 
-| Pacote | O que é |
-| --- | --- |
-| `@vpn/ports` | Interfaces `I*` + tokens `Symbol.for('vpn.*')`. **Zero dependência, zero import.** |
-| `@vpn/contracts` | Schemas zod e vocabulário do wire: códigos de erro, lista de locales |
-| `@vpn/i18n` | Traduções como objeto TS tipado, negociação de locale, tradutor |
-| `@vpn/testing` | `/contracts` (suítes de conformidade, importa vitest) e `/fakes` (drivers `memory`, **não** importa vitest) |
-| `@vpn/config` | Preset de vitest e tsconfig base |
+| Pacote           | O que é                                                                                                     |
+| ---------------- | ----------------------------------------------------------------------------------------------------------- |
+| `@vpn/ports`     | Interfaces `I*` + tokens `Symbol.for('vpn.*')`. **Zero dependência, zero import.**                          |
+| `@vpn/contracts` | Schemas zod e vocabulário do wire: códigos de erro, lista de locales                                        |
+| `@vpn/i18n`      | Traduções como objeto TS tipado, negociação de locale, tradutor                                             |
+| `@vpn/testing`   | `/contracts` (suítes de conformidade, importa vitest) e `/fakes` (drivers `memory`, **não** importa vitest) |
+| `@vpn/config`    | Preset de vitest e tsconfig base                                                                            |
 
 ## Camadas
 

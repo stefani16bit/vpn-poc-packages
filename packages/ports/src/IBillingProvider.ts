@@ -1,9 +1,4 @@
-export type SubscriptionStatus =
-	| 'active'
-	| 'trialing'
-	| 'past_due'
-	| 'canceled'
-	| 'incomplete';
+export type SubscriptionStatus = 'active' | 'trialing' | 'past_due' | 'canceled' | 'incomplete';
 
 export interface Subscription {
 	readonly externalId: string;

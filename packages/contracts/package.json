@@ -1,27 +1,27 @@
 {
-	"name": "@vpn/contracts",
-	"version": "0.7.0",
-	"description": "Request/response schemas and error codes shared by the API and the web app.",
-	"license": "UNLICENSED",
-	"type": "module",
-	"files": [
-		"dist"
-	],
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
-		}
-	},
-	"scripts": {
-		"build": "tsc -p tsconfig.build.json",
-		"typecheck": "tsc -p tsconfig.build.json --noEmit",
-		"test": "vitest run"
-	},
-	"dependencies": {
-		"zod": "^3.24.1"
-	},
-	"devDependencies": {
-		"@vpn/config": "workspace:*"
-	}
+  "name": "@vpn/contracts",
+  "version": "0.7.0",
+  "description": "Request/response schemas and error codes shared by the API and the web app.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@vpn/config": "workspace:*"
+  }
 }

@@ -1,4 +1,9 @@
-import { FALLBACK_LOCALE, RESOURCES, type LocaleMessages, type SupportedLocale } from './locales.js';
+import {
+	FALLBACK_LOCALE,
+	RESOURCES,
+	type LocaleMessages,
+	type SupportedLocale,
+} from './locales.js';
 
 type Leaves<T, Prefix extends string = ''> = {
 	[K in keyof T & string]: T[K] extends string
