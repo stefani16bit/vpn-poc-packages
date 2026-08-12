@@ -9,14 +9,33 @@ export const PERMISSIONS = [
 	'users.update',
 	'users.delete',
 	'devices.create',
+	'devices.assign',
+	'devices.readAll',
+	'devices.revokeAll',
 	'permissions.manage',
 ] as const;
 export const permissionSchema = z.enum(PERMISSIONS);
 export type Permission = z.infer<typeof permissionSchema>;
 
+export const DEVICE_PERMISSIONS = [
+	'devices.create',
+	'devices.assign',
+	'devices.readAll',
+	'devices.revokeAll',
+] as const satisfies readonly Permission[];
+
 export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
 	owner: [...PERMISSIONS],
-	admin: ['users.read', 'users.create', 'users.update', 'users.delete', 'devices.create'],
+	admin: [
+		'users.read',
+		'users.create',
+		'users.update',
+		'users.delete',
+		'devices.create',
+		'devices.assign',
+		'devices.readAll',
+		'devices.revokeAll',
+	],
 	member: ['devices.create'],
 };
 

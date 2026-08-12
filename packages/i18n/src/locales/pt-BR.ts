@@ -96,6 +96,18 @@ export const ptBR = {
 			pro: 'Pro',
 		},
 		backToAccount: 'Voltar para sua conta',
+		invoices: {
+			title: 'Faturas',
+			link: 'Faturas',
+			intro: 'O que já foi cobrado desta empresa, do mais recente para o mais antigo.',
+			empty: 'Nenhuma cobrança ainda. A primeira aparece aqui depois que a assinatura começar.',
+			issuedAt: 'Emitida em {{date}}',
+			number: 'Fatura {{number}}',
+			statusPaid: 'Paga',
+			statusFailed: 'Não paga',
+			download: 'Baixar PDF',
+			archiving: 'Preparando o PDF…',
+		},
 		checkoutSuccess: {
 			receivedTitle: 'Pagamento recebido',
 			activating: 'Estamos ativando sua assinatura.',
@@ -119,6 +131,10 @@ export const ptBR = {
 		empty: 'Nenhum dispositivo ainda. Gere uma chave para conectar o primeiro.',
 		nameLabel: 'Nome do dispositivo',
 		namePlaceholder: 'Notebook do trabalho',
+		ownerLabel: 'Dono da chave',
+		ownerSelf: 'Eu',
+		ownerHelp:
+			'A chave privada é gerada neste navegador e baixada aqui. Se você escolher outra pessoa, entregue o arquivo a ela.',
 		generate: 'Gerar chave e baixar configuração',
 		downloadWarning:
 			'Este arquivo contém a chave privada e só pode ser baixado agora. Se você perdê-lo, gere uma chave nova — a antiga deixa de valer.',
@@ -148,7 +164,7 @@ export const ptBR = {
 	users: {
 		title: 'Usuários',
 		link: 'Usuários',
-		intro: 'Quem tem acesso a esta empresa. Só administradores veem esta página.',
+		intro: 'Quem tem acesso a esta empresa.',
 		empty: 'Nenhum usuário além de você ainda.',
 		emailLabel: 'E-mail',
 		roleLabel: 'Função',
@@ -168,7 +184,7 @@ export const ptBR = {
 		passwordCopy: 'Copiar senha',
 		passwordCopied: 'Senha copiada.',
 		passwordDone: 'Já copiei',
-		changeRole: 'Mudar função',
+		roleOf: 'Função de {{email}}',
 		roleChanged: 'Função alterada. As sessões dessa pessoa foram encerradas.',
 		remove: 'Remover',
 		removeConfirmTitle: 'Remover {{email}}?',
@@ -202,7 +218,12 @@ export const ptBR = {
 				update: 'Mudar a função de alguém',
 				delete: 'Remover usuários',
 			},
-			devices: { create: 'Gerar a própria chave' },
+			devices: {
+				create: 'Gerar a própria chave',
+				assign: 'Gerar chave para outra pessoa',
+				readAll: 'Ver as chaves de todo mundo',
+				revokeAll: 'Revogar a chave de qualquer pessoa',
+			},
 			permissions: { manage: 'Gerir permissões' },
 		},
 		hint: {
@@ -213,7 +234,13 @@ export const ptBR = {
 				update: 'Promover ou rebaixar um colega.',
 				delete: 'Tirar o acesso de alguém na hora.',
 			},
-			devices: { create: 'Gerar chave e baixar a configuração do WireGuard.' },
+			devices: {
+				create: 'Gerar chave e baixar a configuração do WireGuard.',
+				assign:
+					'Escolher o dono ao gerar. Quem gera fica com a chave privada, então dê isto a quem faz suporte.',
+				readAll: 'Enxergar o inventário inteiro em vez de só as próprias chaves.',
+				revokeAll: 'Derrubar o túnel de qualquer pessoa da empresa na hora.',
+			},
 			permissions: { manage: 'Editar esta página.' },
 		},
 	},

@@ -5,10 +5,13 @@ import type {
 	CheckoutSession,
 	IBillingProvider,
 	IClock,
+	Invoice,
 	NormalizedBillingEvent,
 	Subscription,
 	SubscriptionStatus,
 } from '@vpn/ports';
+
+type WireInvoice = Omit<Invoice, 'issuedAt'> & { readonly issuedAt: string };
 
 interface Envelope {
 	readonly id: string;
@@ -18,6 +21,7 @@ interface Envelope {
 	readonly subscription?: Omit<Subscription, 'currentPeriodEnd'> & {
 		readonly currentPeriodEnd: string | null;
 	};
+	readonly invoice?: WireInvoice;
 	readonly externalCustomerId?: string;
 }
 
@@ -28,8 +32,13 @@ function reviveSubscription(raw: NonNullable<Envelope['subscription']>): Subscri
 	};
 }
 
+function reviveInvoice(raw: WireInvoice): Invoice {
+	return { ...raw, issuedAt: new Date(raw.issuedAt) };
+}
+
 export class MemoryBillingProvider implements IBillingProvider {
 	readonly #subscriptions = new Map<string, Subscription>();
+	readonly #invoices = new Map<string, Invoice>();
 	readonly #checkoutsByKey = new Map<string, CheckoutSession>();
 	readonly #accountByCheckout = new Map<string, string>();
 	readonly #clock: IClock;
@@ -105,16 +114,37 @@ export class MemoryBillingProvider implements IBillingProvider {
 				};
 			}
 			case 'payment_failed':
+				if (!envelope.invoice) throw new Error('payment_failed without an invoice');
 				return {
 					kind: 'payment_failed',
 					externalEventId: envelope.id,
 					occurredAt: new Date(envelope.created),
 					accountId: envelope.accountId,
 					externalCustomerId: envelope.externalCustomerId ?? 'cus_memory',
+					invoice: reviveInvoice(envelope.invoice),
+				};
+			case 'invoice_paid':
+				if (!envelope.invoice) throw new Error('invoice_paid without an invoice');
+				return {
+					kind: 'invoice_paid',
+					externalEventId: envelope.id,
+					occurredAt: new Date(envelope.created),
+					accountId: envelope.accountId,
+					externalCustomerId: envelope.externalCustomerId ?? 'cus_memory',
+					invoice: reviveInvoice(envelope.invoice),
 				};
 			default:
 				return null;
 		}
+	}
+
+	async fetchInvoicePdf(externalInvoiceId: string): Promise<Uint8Array | null> {
+		const invoice = this.#invoices.get(externalInvoiceId);
+		if (!invoice) return null;
+
+		return new TextEncoder().encode(
+			`%PDF-1.4\n% memory invoice ${invoice.externalId} ${invoice.amountCents} ${invoice.currency}\n%%EOF\n`,
+		);
 	}
 
 	emit(
@@ -122,6 +152,7 @@ export class MemoryBillingProvider implements IBillingProvider {
 		accountId: string,
 		extras: {
 			subscription?: Subscription;
+			invoice?: Invoice;
 			externalCustomerId?: string;
 			occurredAt?: Date;
 		} = {},
@@ -152,6 +183,24 @@ export class MemoryBillingProvider implements IBillingProvider {
 		};
 		this.#subscriptions.set(externalId, subscription);
 		return subscription;
+	}
+
+	seedInvoice(
+		externalId: string,
+		accountId: string,
+		status: Invoice['status'] = 'paid',
+		amountCents = 4900,
+	): Invoice {
+		const invoice: Invoice = {
+			externalId,
+			number: `${accountId}-0001`,
+			status,
+			amountCents,
+			currency: 'brl',
+			issuedAt: this.#clock.now(),
+		};
+		this.#invoices.set(externalId, invoice);
+		return invoice;
 	}
 
 	accountForCheckout(checkoutId: string): string | undefined {

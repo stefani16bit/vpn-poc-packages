@@ -100,6 +100,18 @@ export const en: LocaleMessages = {
 			pro: 'Pro',
 		},
 		backToAccount: 'Back to your account',
+		invoices: {
+			title: 'Invoices',
+			link: 'Invoices',
+			intro: 'What this company has been charged, most recent first.',
+			empty: 'No charges yet. The first one shows up here once the subscription starts.',
+			issuedAt: 'Issued on {{date}}',
+			number: 'Invoice {{number}}',
+			statusPaid: 'Paid',
+			statusFailed: 'Not paid',
+			download: 'Download PDF',
+			archiving: 'Preparing the PDF…',
+		},
 		checkoutSuccess: {
 			receivedTitle: 'Payment received',
 			activating: 'We are activating your subscription.',
@@ -122,6 +134,10 @@ export const en: LocaleMessages = {
 		empty: 'No devices yet. Generate a key to connect the first one.',
 		nameLabel: 'Device name',
 		namePlaceholder: 'Work laptop',
+		ownerLabel: 'Key owner',
+		ownerSelf: 'Me',
+		ownerHelp:
+			'The private key is generated in this browser and downloaded here. If you pick somebody else, hand them the file.',
 		generate: 'Generate key and download configuration',
 		downloadWarning:
 			'This file holds the private key and can only be downloaded now. If you lose it, generate a new key — the old one stops working.',
@@ -151,7 +167,7 @@ export const en: LocaleMessages = {
 	users: {
 		title: 'Users',
 		link: 'Users',
-		intro: 'Who can reach this company. Only administrators see this page.',
+		intro: 'Who can reach this company.',
 		empty: 'No users besides you yet.',
 		emailLabel: 'E-mail',
 		roleLabel: 'Role',
@@ -171,7 +187,7 @@ export const en: LocaleMessages = {
 		passwordCopy: 'Copy password',
 		passwordCopied: 'Password copied.',
 		passwordDone: 'I have copied it',
-		changeRole: 'Change role',
+		roleOf: 'Role of {{email}}',
 		roleChanged: "Role changed. That person's sessions were ended.",
 		remove: 'Remove',
 		removeConfirmTitle: 'Remove {{email}}?',
@@ -205,7 +221,12 @@ export const en: LocaleMessages = {
 				update: "Change someone's role",
 				delete: 'Remove users',
 			},
-			devices: { create: 'Generate their own key' },
+			devices: {
+				create: 'Generate their own key',
+				assign: 'Generate a key for somebody else',
+				readAll: 'See every key in the company',
+				revokeAll: "Revoke anybody's key",
+			},
 			permissions: { manage: 'Manage permissions' },
 		},
 		hint: {
@@ -216,7 +237,13 @@ export const en: LocaleMessages = {
 				update: 'Promote or demote a colleague.',
 				delete: 'Take away somebody access on the spot.',
 			},
-			devices: { create: 'Generate a key and download the WireGuard configuration.' },
+			devices: {
+				create: 'Generate a key and download the WireGuard configuration.',
+				assign:
+					'Choose the owner when generating. Whoever generates holds the private key, so give this to whoever runs support.',
+				readAll: 'See the whole inventory instead of only their own keys.',
+				revokeAll: "Drop anybody's tunnel in the company, on the spot.",
+			},
 			permissions: { manage: 'Edit this page.' },
 		},
 	},

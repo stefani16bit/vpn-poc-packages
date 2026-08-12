@@ -22,6 +22,17 @@ export interface CheckoutSession {
 	readonly url: string;
 }
 
+export type InvoiceStatus = 'paid' | 'failed';
+
+export interface Invoice {
+	readonly externalId: string;
+	readonly number: string | null;
+	readonly status: InvoiceStatus;
+	readonly amountCents: number;
+	readonly currency: string;
+	readonly issuedAt: Date;
+}
+
 export type NormalizedBillingEvent =
 	| {
 			readonly kind: 'subscription_activated';
@@ -50,6 +61,15 @@ export type NormalizedBillingEvent =
 			readonly occurredAt: Date;
 			readonly accountId: string;
 			readonly externalCustomerId: string;
+			readonly invoice: Invoice;
+	  }
+	| {
+			readonly kind: 'invoice_paid';
+			readonly externalEventId: string;
+			readonly occurredAt: Date;
+			readonly accountId: string;
+			readonly externalCustomerId: string;
+			readonly invoice: Invoice;
 	  };
 
 export interface IBillingProvider {
@@ -57,6 +77,8 @@ export interface IBillingProvider {
 	getSubscription(externalId: string): Promise<Subscription | null>;
 	cancelSubscription(externalId: string, when: 'now' | 'period_end'): Promise<Subscription>;
 	resumeSubscription(externalId: string): Promise<Subscription>;
+
+	fetchInvoicePdf(externalInvoiceId: string): Promise<Uint8Array | null>;
 
 	verifyWebhookSignature(rawBody: string, signatureHeader: string): boolean;
 	parseWebhookEvent(rawBody: string): NormalizedBillingEvent | null;

@@ -50,6 +50,16 @@ describeBillingProviderContract('MemoryBillingProvider', () => {
 				subscription: provider.seedSubscription(`sub_${accountId}`, accountId),
 			}),
 		unknownEventWebhook: () => provider.emit('invoice.upcoming', 'account-1'),
+		paidInvoiceWebhook: (accountId) =>
+			provider.emit('invoice_paid', accountId, {
+				invoice: provider.seedInvoice(`in_${accountId}_paid`, accountId, 'paid'),
+			}),
+		failedInvoiceWebhook: (accountId) =>
+			provider.emit('payment_failed', accountId, {
+				invoice: provider.seedInvoice(`in_${accountId}_failed`, accountId, 'failed'),
+			}),
+		invoicedExternalId: (accountId) =>
+			provider.seedInvoice(`in_${accountId}_paid`, accountId).externalId,
 	};
 });
 
@@ -145,9 +155,25 @@ describe('MemoryBillingProvider', () => {
 
 	it('reports a payment failure with the customer it belongs to', () => {
 		const provider = new MemoryBillingProvider(new FixedClock());
-		const hook = provider.emit('payment_failed', 'account-1', { externalCustomerId: 'cus_9' });
+		const hook = provider.emit('payment_failed', 'account-1', {
+			externalCustomerId: 'cus_9',
+			invoice: provider.seedInvoice('in_1', 'account-1', 'failed'),
+		});
 
 		const event = provider.parseWebhookEvent(hook.rawBody);
 		expect(event).toMatchObject({ kind: 'payment_failed', externalCustomerId: 'cus_9' });
+	});
+
+	// The driver that runs in development, not only in tests: a screen that
+	// cannot show a single invoice locally is a screen nobody reviews.
+	it('revives the issue date, which crossed the wire as a string', () => {
+		const provider = new MemoryBillingProvider(new FixedClock());
+		const hook = provider.emit('invoice_paid', 'account-1', {
+			invoice: provider.seedInvoice('in_2', 'account-1'),
+		});
+
+		const event = provider.parseWebhookEvent(hook.rawBody);
+		if (event?.kind !== 'invoice_paid') throw new Error('expected a paid invoice');
+		expect(event.invoice.issuedAt).toBeInstanceOf(Date);
 	});
 });

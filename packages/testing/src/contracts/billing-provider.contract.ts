@@ -13,6 +13,9 @@ export interface BillingProviderHarness {
 	activeSubscription(accountId: string): Promise<string> | string;
 	activationWebhook(accountId: string): Promise<SignedWebhook> | SignedWebhook;
 	unknownEventWebhook(): Promise<SignedWebhook> | SignedWebhook;
+	paidInvoiceWebhook(accountId: string): Promise<SignedWebhook> | SignedWebhook;
+	failedInvoiceWebhook(accountId: string): Promise<SignedWebhook> | SignedWebhook;
+	invoicedExternalId(accountId: string): Promise<string> | string;
 }
 
 function checkout(overrides: Partial<CheckoutRequest> = {}): CheckoutRequest {
@@ -147,7 +150,7 @@ export function describeBillingProviderContract(
 				const hook = await harness.activationWebhook('account-1');
 				const event = provider.parseWebhookEvent(hook.rawBody);
 
-				if (event?.kind === 'payment_failed' || !event)
+				if (!event || event.kind === 'payment_failed' || event.kind === 'invoice_paid')
 					throw new Error('expected a subscription event');
 				expect(
 					event.subscription.currentPeriodEnd === null ||
@@ -182,6 +185,72 @@ export function describeBillingProviderContract(
 
 			it('throws rather than returning null for an unparseable body', async () => {
 				expect(() => provider.parseWebhookEvent('<html>gateway timeout</html>')).toThrow();
+			});
+		});
+
+		describe('invoices', () => {
+			it('normalises a paid invoice', async () => {
+				const hook = await harness.paidInvoiceWebhook('account-1');
+				const event = provider.parseWebhookEvent(hook.rawBody);
+
+				expect(event?.kind).toBe('invoice_paid');
+				expect(event?.accountId).toBe('account-1');
+			});
+
+			it('carries what a statement line needs, and nothing the wire cannot hold', async () => {
+				const hook = await harness.paidInvoiceWebhook('account-1');
+				const event = provider.parseWebhookEvent(hook.rawBody);
+
+				if (event?.kind !== 'invoice_paid') throw new Error('expected a paid invoice');
+				expect(event.invoice.externalId).toBeTruthy();
+				expect(event.invoice.status).toBe('paid');
+				expect(Number.isInteger(event.invoice.amountCents)).toBe(true);
+				expect(event.invoice.currency).toBeTruthy();
+			});
+
+			// Money in the smallest unit, never a float: 19.99 in binary is not 19.99,
+			// and a statement that disagrees with the card charge is worse than none.
+			it('reports the amount in cents rather than in a fractional unit', async () => {
+				const hook = await harness.paidInvoiceWebhook('account-1');
+				const event = provider.parseWebhookEvent(hook.rawBody);
+
+				if (event?.kind !== 'invoice_paid') throw new Error('expected a paid invoice');
+				expect(event.invoice.amountCents % 1).toBe(0);
+			});
+
+			it('returns issuedAt as a Date rather than as the wire format', async () => {
+				const hook = await harness.paidInvoiceWebhook('account-1');
+				const event = provider.parseWebhookEvent(hook.rawBody);
+
+				if (event?.kind !== 'invoice_paid') throw new Error('expected a paid invoice');
+				expect(event.invoice.issuedAt).toBeInstanceOf(Date);
+				expect(Number.isNaN(event.invoice.issuedAt.getTime())).toBe(false);
+			});
+
+			// One provider event is one normalised event. Splitting a failed payment
+			// into a dunning event and an invoice event would send the same
+			// external_event_id through the ledger twice, and the unique index that
+			// makes redelivery safe would drop whichever arrived second.
+			it('carries the invoice on a failed payment instead of emitting a second event', async () => {
+				const hook = await harness.failedInvoiceWebhook('account-1');
+				const event = provider.parseWebhookEvent(hook.rawBody);
+
+				expect(event?.kind).toBe('payment_failed');
+				if (event?.kind !== 'payment_failed') throw new Error('expected a failed payment');
+				expect(event.invoice.status).toBe('failed');
+				expect(event.invoice.externalId).toBeTruthy();
+			});
+
+			it('hands back the document bytes for an invoice it issued', async () => {
+				const externalId = await harness.invoicedExternalId('account-1');
+				const pdf = await provider.fetchInvoicePdf(externalId);
+
+				expect(pdf).toBeInstanceOf(Uint8Array);
+				expect(pdf?.length ?? 0).toBeGreaterThan(0);
+			});
+
+			it('answers null for an invoice it never issued, rather than throwing', async () => {
+				expect(await provider.fetchInvoicePdf('in_nothing_like_this')).toBeNull();
 			});
 		});
 	});

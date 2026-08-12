@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { USER_ROLES } from './auth.js';
 import {
 	DEFAULT_ROLE_PERMISSIONS,
+	DEVICE_PERMISSIONS,
 	PERMISSIONS,
 	effectivePermissions,
 	permissionGrantSchema,
@@ -14,12 +15,26 @@ import {
 describe('PERMISSIONS', () => {
 	it('names every permission as resource.action, so a screen can group them', () => {
 		for (const permission of PERMISSIONS) {
-			expect(permission).toMatch(/^[a-z]+\.[a-z]+$/);
+			expect(permission).toMatch(/^[a-z]+\.[a-z][a-zA-Z]*$/);
 		}
 	});
 
 	it('has no duplicate', () => {
 		expect(new Set(PERMISSIONS).size).toBe(PERMISSIONS.length);
+	});
+});
+
+describe('DEVICE_PERMISSIONS', () => {
+	it('holds every device permission, so a nav built from it never misses one', () => {
+		const devicePermissions = PERMISSIONS.filter((permission) => permission.startsWith('devices.'));
+
+		expect([...DEVICE_PERMISSIONS].sort()).toEqual([...devicePermissions].sort());
+	});
+
+	it('names nothing outside the closed set', () => {
+		for (const permission of DEVICE_PERMISSIONS) {
+			expect(PERMISSIONS).toContain(permission);
+		}
 	});
 });
 
@@ -43,6 +58,18 @@ describe('DEFAULT_ROLE_PERMISSIONS', () => {
 	it('lets an admin manage people and not money', () => {
 		expect(DEFAULT_ROLE_PERMISSIONS.admin).toContain('users.create');
 		expect(DEFAULT_ROLE_PERMISSIONS.admin).not.toContain('billing.manage');
+	});
+
+	it('gives an admin the whole device reach that role rank used to give', () => {
+		for (const permission of DEVICE_PERMISSIONS) {
+			expect(DEFAULT_ROLE_PERMISSIONS.admin).toContain(permission);
+		}
+	});
+
+	it('keeps a member out of the keys that belong to everyone else', () => {
+		expect(DEFAULT_ROLE_PERMISSIONS.member).not.toContain('devices.assign');
+		expect(DEFAULT_ROLE_PERMISSIONS.member).not.toContain('devices.readAll');
+		expect(DEFAULT_ROLE_PERMISSIONS.member).not.toContain('devices.revokeAll');
 	});
 
 	it('lets a member generate its own key by default, which a tenant may take away', () => {

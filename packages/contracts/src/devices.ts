@@ -17,6 +17,7 @@ export const deviceNameSchema = z
 export const createDeviceRequestSchema = z.object({
 	name: deviceNameSchema,
 	publicKey: publicKeySchema,
+	userId: z.string().uuid().optional(),
 });
 export type CreateDeviceRequest = z.infer<typeof createDeviceRequestSchema>;
 
@@ -55,3 +56,16 @@ export const createDeviceResponseSchema = z.object({
 	device: deviceWithNodeSchema,
 });
 export type CreateDeviceResponse = z.infer<typeof createDeviceResponseSchema>;
+
+// Who a key may be assigned to. It is the id and the address and nothing else:
+// the picker needs a label, and the users API is a different permission.
+export const deviceAssigneeSchema = z.object({
+	id: z.string().uuid(),
+	email: z.string().email(),
+});
+export type DeviceAssignee = z.infer<typeof deviceAssigneeSchema>;
+
+export const deviceAssigneeListResponseSchema = z.object({
+	users: z.array(deviceAssigneeSchema),
+});
+export type DeviceAssigneeListResponse = z.infer<typeof deviceAssigneeListResponseSchema>;

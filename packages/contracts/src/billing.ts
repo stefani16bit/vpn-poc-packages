@@ -35,3 +35,25 @@ export const subscriptionResponseSchema = z.object({
 	cancelAtPeriodEnd: z.boolean(),
 });
 export type SubscriptionResponse = z.infer<typeof subscriptionResponseSchema>;
+
+export const INVOICE_STATUSES = ['paid', 'failed'] as const;
+export const invoiceStatusSchema = z.enum(INVOICE_STATUSES);
+export type InvoiceStatusView = z.infer<typeof invoiceStatusSchema>;
+
+// The smallest unit of the currency, never a fraction: a statement that
+// disagrees with the card charge is worse than no statement.
+export const invoiceSchema = z.object({
+	id: z.string().uuid(),
+	number: z.string().nullable(),
+	status: invoiceStatusSchema,
+	amountCents: z.number().int(),
+	currency: z.string(),
+	issuedAt: z.string().datetime(),
+	archived: z.boolean(),
+});
+export type Invoice = z.infer<typeof invoiceSchema>;
+
+export const invoiceListResponseSchema = z.object({
+	invoices: z.array(invoiceSchema),
+});
+export type InvoiceListResponse = z.infer<typeof invoiceListResponseSchema>;

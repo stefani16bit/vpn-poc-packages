@@ -55,4 +55,23 @@ describe('createDeviceRequestSchema', () => {
 		});
 		expect(parsed).toEqual({ name: 'laptop', publicKey: REAL });
 	});
+
+	it('leaves the owner absent when nobody was chosen, which reads as "for me"', () => {
+		const parsed = createDeviceRequestSchema.parse({ name: 'laptop', publicKey: REAL });
+		expect(parsed.userId).toBeUndefined();
+	});
+
+	it('carries the owner when the key is being assigned to someone else', () => {
+		const userId = '3f2504e0-4f89-11d3-9a0c-0305e82c3301';
+		const parsed = createDeviceRequestSchema.parse({ name: 'laptop', publicKey: REAL, userId });
+
+		expect(parsed.userId).toBe(userId);
+	});
+
+	it('rejects an owner that is not an id, so a typo never reaches the repository', () => {
+		expect(
+			createDeviceRequestSchema.safeParse({ name: 'laptop', publicKey: REAL, userId: 'ana' })
+				.success,
+		).toBe(false);
+	});
 });

@@ -19,6 +19,8 @@ export type {
 	SubscriptionStatus,
 	CheckoutRequest,
 	CheckoutSession,
+	Invoice,
+	InvoiceStatus,
 	NormalizedBillingEvent,
 } from './IBillingProvider.js';
 export { BILLING_PROVIDER } from './IBillingProvider.js';
