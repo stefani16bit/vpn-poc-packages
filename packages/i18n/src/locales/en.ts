@@ -197,7 +197,6 @@ export const en: LocaleMessages = {
 		reset: 'Back to default',
 		resetAll: 'Reset everything to default',
 		modified: 'Differs from the default',
-		ownerLocked: 'The owner never loses this one — without it nobody could undo the change.',
 		name: {
 			billing: { manage: 'Manage the subscription' },
 			users: {

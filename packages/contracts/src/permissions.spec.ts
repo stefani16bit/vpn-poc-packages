@@ -96,13 +96,14 @@ describe('effectivePermissions', () => {
 		).toEqual([]);
 	});
 
-	it('keeps the owner able to reach the screen that grants permissions', () => {
-		expect(
-			effectivePermissions('owner', [{ permission: 'permissions.manage', granted: false }], []),
-		).toContain('permissions.manage');
-		expect(
-			effectivePermissions('owner', [], [{ permission: 'permissions.manage', granted: false }]),
-		).toContain('permissions.manage');
+	it('ignores every grant written against the owner, in both layers', () => {
+		const stripped = PERMISSIONS.map((permission) => ({ permission, granted: false }));
+
+		expect(effectivePermissions('owner', stripped, stripped)).toEqual([...PERMISSIONS]);
+	});
+
+	it('gives the owner a permission it was never granted, because it holds them all', () => {
+		expect(effectivePermissions('owner', [], [])).toEqual([...PERMISSIONS]);
 	});
 
 	it('ignores a stored permission the code no longer names', () => {

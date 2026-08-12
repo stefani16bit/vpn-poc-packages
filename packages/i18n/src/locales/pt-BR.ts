@@ -194,7 +194,6 @@ export const ptBR = {
 		reset: 'Voltar ao padrão',
 		resetAll: 'Voltar tudo ao padrão',
 		modified: 'Diferente do padrão',
-		ownerLocked: 'O dono nunca perde esta permissão — sem ela ninguém desfaria a mudança.',
 		name: {
 			billing: { manage: 'Gerir a assinatura' },
 			users: {

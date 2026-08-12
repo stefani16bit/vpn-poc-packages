@@ -20,9 +20,6 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> =
 	member: ['devices.create'],
 };
 
-// an owner locked out of this one cannot undo the change that locked it out
-const OWNER_FLOOR: readonly Permission[] = ['permissions.manage'];
-
 export const permissionGrantSchema = z.object({
 	permission: permissionSchema,
 	granted: z.boolean(),
@@ -39,6 +36,8 @@ export function effectivePermissions(
 	roleGrants: readonly StoredGrant[],
 	userGrants: readonly StoredGrant[],
 ): Permission[] {
+	if (role === 'owner') return [...PERMISSIONS];
+
 	const effective = new Set<Permission>(DEFAULT_ROLE_PERMISSIONS[role]);
 
 	for (const grant of [...roleGrants, ...userGrants]) {
@@ -48,8 +47,6 @@ export function effectivePermissions(
 		if (grant.granted) effective.add(parsed.data);
 		else effective.delete(parsed.data);
 	}
-
-	if (role === 'owner') for (const permission of OWNER_FLOOR) effective.add(permission);
 
 	return PERMISSIONS.filter((permission) => effective.has(permission));
 }
