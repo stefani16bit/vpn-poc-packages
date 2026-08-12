@@ -180,6 +180,44 @@ export const ptBR = {
 		selfForbidden: 'Você não pode mudar a própria função nem remover a si mesmo.',
 		ownerForbidden: 'O dono da empresa não pode ser alterado nem removido.',
 	},
+	permissions: {
+		title: 'Permissões',
+		link: 'Permissões',
+		intro:
+			'O que cada função pode fazer nesta empresa. O padrão vem do produto; o que você mudar aqui vale só para esta empresa.',
+		byRole: 'Por função',
+		byPerson: 'Por pessoa',
+		byPersonIntro:
+			'Exceções para uma pessoa específica, por cima da função dela. Use quando alguém precisa de mais — ou de menos — que os colegas.',
+		byPersonEmpty: 'Ninguém tem exceção. Todos seguem a função.',
+		changed: 'Padrão alterado.',
+		reset: 'Voltar ao padrão',
+		resetAll: 'Voltar tudo ao padrão',
+		modified: 'Diferente do padrão',
+		ownerLocked: 'O dono nunca perde esta permissão — sem ela ninguém desfaria a mudança.',
+		name: {
+			billing: { manage: 'Gerir a assinatura' },
+			users: {
+				read: 'Ver os usuários',
+				create: 'Criar usuários',
+				update: 'Mudar a função de alguém',
+				delete: 'Remover usuários',
+			},
+			devices: { create: 'Gerar a própria chave' },
+			permissions: { manage: 'Gerir permissões' },
+		},
+		hint: {
+			billing: { manage: 'Assinar, cancelar e retomar. Mexe no dinheiro da empresa.' },
+			users: {
+				read: 'Abrir a página de usuários e ver quem tem acesso.',
+				create: 'Convidar alguém novo, com a senha temporária.',
+				update: 'Promover ou rebaixar um colega.',
+				delete: 'Tirar o acesso de alguém na hora.',
+			},
+			devices: { create: 'Gerar chave e baixar a configuração do WireGuard.' },
+			permissions: { manage: 'Editar esta página.' },
+		},
+	},
 	servers: {
 		title: 'Servidores e regiões',
 		link: 'Servidores',

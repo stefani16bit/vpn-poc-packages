@@ -1,0 +1,87 @@
+import { z } from 'zod';
+
+import { roleSchema, type UserRole } from './auth.js';
+
+export const PERMISSIONS = [
+	'billing.manage',
+	'users.read',
+	'users.create',
+	'users.update',
+	'users.delete',
+	'devices.create',
+	'permissions.manage',
+] as const;
+export const permissionSchema = z.enum(PERMISSIONS);
+export type Permission = z.infer<typeof permissionSchema>;
+
+export const DEFAULT_ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
+	owner: [...PERMISSIONS],
+	admin: ['users.read', 'users.create', 'users.update', 'users.delete', 'devices.create'],
+	member: ['devices.create'],
+};
+
+// an owner locked out of this one cannot undo the change that locked it out
+const OWNER_FLOOR: readonly Permission[] = ['permissions.manage'];
+
+export const permissionGrantSchema = z.object({
+	permission: permissionSchema,
+	granted: z.boolean(),
+});
+export type PermissionGrant = z.infer<typeof permissionGrantSchema>;
+
+export interface StoredGrant {
+	readonly permission: string;
+	readonly granted: boolean;
+}
+
+export function effectivePermissions(
+	role: UserRole,
+	roleGrants: readonly StoredGrant[],
+	userGrants: readonly StoredGrant[],
+): Permission[] {
+	const effective = new Set<Permission>(DEFAULT_ROLE_PERMISSIONS[role]);
+
+	for (const grant of [...roleGrants, ...userGrants]) {
+		const parsed = permissionSchema.safeParse(grant.permission);
+		if (!parsed.success) continue;
+
+		if (grant.granted) effective.add(parsed.data);
+		else effective.delete(parsed.data);
+	}
+
+	if (role === 'owner') for (const permission of OWNER_FLOOR) effective.add(permission);
+
+	return PERMISSIONS.filter((permission) => effective.has(permission));
+}
+
+export const permissionsResponseSchema = z.object({
+	permissions: z.array(permissionSchema),
+});
+export type PermissionsResponse = z.infer<typeof permissionsResponseSchema>;
+
+export const roleGrantsSchema = z.object({
+	role: roleSchema,
+	defaults: z.array(permissionSchema),
+	grants: z.array(permissionGrantSchema),
+	effective: z.array(permissionSchema),
+});
+export type RoleGrants = z.infer<typeof roleGrantsSchema>;
+
+export const userGrantsSchema = z.object({
+	userId: z.string().uuid(),
+	email: z.string().email(),
+	role: roleSchema,
+	grants: z.array(permissionGrantSchema),
+});
+export type UserGrants = z.infer<typeof userGrantsSchema>;
+
+export const roleGrantsResponseSchema = z.object({
+	roles: z.array(roleGrantsSchema),
+	users: z.array(userGrantsSchema),
+});
+export type RoleGrantsResponse = z.infer<typeof roleGrantsResponseSchema>;
+
+export const updateGrantsRequestSchema = z.object({
+	grants: z.array(permissionGrantSchema),
+});
+export type UpdateGrantsRequest = z.infer<typeof updateGrantsRequestSchema>;

@@ -183,6 +183,44 @@ export const en: LocaleMessages = {
 		selfForbidden: 'You cannot change your own role or remove yourself.',
 		ownerForbidden: 'The company owner cannot be changed or removed.',
 	},
+	permissions: {
+		title: 'Permissions',
+		link: 'Permissions',
+		intro:
+			'What each role may do in this company. The defaults come from the product; anything you change here applies to this company only.',
+		byRole: 'By role',
+		byPerson: 'By person',
+		byPersonIntro:
+			'Exceptions for one person, on top of their role. Use it when somebody needs more — or less — than their colleagues.',
+		byPersonEmpty: 'Nobody has an exception. Everyone follows their role.',
+		changed: 'Default changed.',
+		reset: 'Back to default',
+		resetAll: 'Reset everything to default',
+		modified: 'Differs from the default',
+		ownerLocked: 'The owner never loses this one — without it nobody could undo the change.',
+		name: {
+			billing: { manage: 'Manage the subscription' },
+			users: {
+				read: 'See the users',
+				create: 'Create users',
+				update: "Change someone's role",
+				delete: 'Remove users',
+			},
+			devices: { create: 'Generate their own key' },
+			permissions: { manage: 'Manage permissions' },
+		},
+		hint: {
+			billing: { manage: 'Subscribe, cancel and resume. Touches the company money.' },
+			users: {
+				read: 'Open the users page and see who has access.',
+				create: 'Invite somebody new, with the temporary password.',
+				update: 'Promote or demote a colleague.',
+				delete: 'Take away somebody access on the spot.',
+			},
+			devices: { create: 'Generate a key and download the WireGuard configuration.' },
+			permissions: { manage: 'Edit this page.' },
+		},
+	},
 	servers: {
 		title: 'Servers and regions',
 		link: 'Servers',
