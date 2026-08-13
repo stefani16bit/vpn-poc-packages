@@ -1,7 +1,7 @@
 export type { IClock } from './IClock.js';
 export { CLOCK } from './IClock.js';
 
-export type { ICacheStore, CacheKey } from './ICacheStore.js';
+export type { ICacheStore, CacheKey, CacheCounter } from './ICacheStore.js';
 export { CACHE_STORE } from './ICacheStore.js';
 
 export type { IPasswordHasher } from './IPasswordHasher.js';

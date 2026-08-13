@@ -1,6 +1,6 @@
 {
   "name": "@vpn/testing",
-  "version": "0.13.0",
+  "version": "0.15.0",
   "description": "Conformance suites every adapter must pass, plus the in-memory reference implementations.",
   "license": "UNLICENSED",
   "type": "module",

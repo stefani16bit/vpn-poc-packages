@@ -11,6 +11,7 @@ export const ptBR = {
 		themeDark: 'Escuro',
 		themeLight: 'Claro',
 		skipToContent: 'Ir para o conteúdo',
+		retryInMinutes: 'Muitas tentativas. Tente de novo em {{minutes}} min.',
 	},
 
 	auth: {
@@ -387,12 +388,13 @@ export const ptBR = {
 		TOKEN_INVALID: 'Este link não é válido ou já foi utilizado.',
 		TOKEN_EXPIRED: 'Este link expirou. Solicite um novo.',
 		SESSION_REUSE_DETECTED: 'Sua sessão foi encerrada por segurança. Entre novamente.',
-		RATE_LIMITED: 'Muitas tentativas. Aguarde alguns minutos.',
+		RATE_LIMITED: 'Muitas tentativas. Tente de novo mais tarde.',
 		UNAUTHENTICATED: 'Entre para continuar.',
 		FORBIDDEN: 'Você não tem acesso a este recurso.',
 		NOT_FOUND: 'Não encontramos o que você procura.',
 		CONFLICT: 'Esta operação conflita com o estado atual.',
 		PAYMENT_REQUIRED: 'É necessário ter uma assinatura ativa.',
+		QUOTA_EXCEEDED: 'Seu plano já está no limite. Revogue algo antes de criar outro.',
 		INTERNAL: 'Algo deu errado do nosso lado. Tente novamente.',
 		_NETWORK_ERROR: 'Não foi possível conectar. Verifique sua internet.',
 		_PARSE_ERROR: 'Recebemos uma resposta inesperada do servidor.',

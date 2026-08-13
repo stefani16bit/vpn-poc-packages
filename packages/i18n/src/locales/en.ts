@@ -13,6 +13,7 @@ export const en: LocaleMessages = {
 		themeDark: 'Dark',
 		themeLight: 'Light',
 		skipToContent: 'Skip to content',
+		retryInMinutes: 'Too many attempts. Try again in {{minutes}} min.',
 	},
 
 	auth: {
@@ -390,12 +391,13 @@ export const en: LocaleMessages = {
 		TOKEN_INVALID: 'This link is not valid or has already been used.',
 		TOKEN_EXPIRED: 'This link has expired. Request a new one.',
 		SESSION_REUSE_DETECTED: 'Your session was ended for security. Sign in again.',
-		RATE_LIMITED: 'Too many attempts. Try again in a few minutes.',
+		RATE_LIMITED: 'Too many attempts. Try again later.',
 		UNAUTHENTICATED: 'Sign in to continue.',
 		FORBIDDEN: 'You do not have access to this resource.',
 		NOT_FOUND: 'We could not find what you are looking for.',
 		CONFLICT: 'This operation conflicts with the current state.',
 		PAYMENT_REQUIRED: 'An active subscription is required.',
+		QUOTA_EXCEEDED: 'Your plan is at its limit. Revoke something before creating another.',
 		INTERNAL: 'Something went wrong on our side. Try again.',
 		_NETWORK_ERROR: 'Could not connect. Check your internet.',
 		_PARSE_ERROR: 'We received an unexpected response from the server.',

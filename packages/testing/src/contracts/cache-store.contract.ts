@@ -89,13 +89,13 @@ export function describeCacheStoreContract(
 		});
 
 		it('starts an increment at 1', async () => {
-			await expect(store.increment(key, 60)).resolves.toBe(1);
+			expect((await store.increment(key, 60)).count).toBe(1);
 		});
 
 		it('accumulates increments', async () => {
 			await store.increment(key, 60);
 			await store.increment(key, 60);
-			await expect(store.increment(key, 60)).resolves.toBe(3);
+			expect((await store.increment(key, 60)).count).toBe(3);
 		});
 
 		it('does not extend the window when incrementing an existing counter', async () => {
@@ -103,13 +103,44 @@ export function describeCacheStoreContract(
 			await harness.advance(6);
 			await store.increment(key, 10);
 			await harness.advance(6);
-			await expect(store.increment(key, 10)).resolves.toBe(1);
+			expect((await store.increment(key, 10)).count).toBe(1);
 		});
 
 		it('restarts the count after the window expires', async () => {
 			await store.increment(key, 10);
 			await harness.advance(11);
-			await expect(store.increment(key, 10)).resolves.toBe(1);
+			expect((await store.increment(key, 10)).count).toBe(1);
+		});
+
+		// Without this the caller counts but cannot say when to come back, and a
+		// 429 with no Retry-After leaves the client guessing.
+		it('reports how much of the window is left', async () => {
+			const opened = await store.increment(key, 60);
+
+			expect(opened.ttlSeconds).toBeGreaterThan(0);
+			expect(opened.ttlSeconds).toBeLessThanOrEqual(60);
+		});
+
+		it('reports a shrinking window as it elapses, in one call rather than two', async () => {
+			await store.increment(key, 60);
+			await harness.advance(30);
+
+			const later = await store.increment(key, 60);
+
+			expect(later.count).toBe(2);
+			expect(later.ttlSeconds).toBeLessThanOrEqual(30);
+			expect(later.ttlSeconds).toBeGreaterThan(0);
+		});
+
+		it('reports the full window again once the counter has restarted', async () => {
+			await store.increment(key, 10);
+			await harness.advance(11);
+
+			const restarted = await store.increment(key, 10);
+
+			expect(restarted.count).toBe(1);
+			expect(restarted.ttlSeconds).toBeGreaterThan(0);
+			expect(restarted.ttlSeconds).toBeLessThanOrEqual(10);
 		});
 	});
 }

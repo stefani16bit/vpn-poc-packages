@@ -1,4 +1,4 @@
-import type { CacheKey, ICacheStore, IClock } from '@vpn/ports';
+import type { CacheCounter, CacheKey, ICacheStore, IClock } from '@vpn/ports';
 
 interface Entry {
 	readonly value: unknown;
@@ -40,17 +40,26 @@ export class MemoryCacheStore implements ICacheStore {
 		this.#entries.delete(flattenCacheKey(key));
 	}
 
-	async increment(key: CacheKey, ttlSeconds: number): Promise<number> {
+	// Fake-only, like the seeds on MemoryBillingProvider. A suite that shares one
+	// process shares the counters in it, and a rate limit keyed on the caller
+	// address is shared state exactly like a table is.
+	clear(): void {
+		this.#entries.clear();
+	}
+
+	async increment(key: CacheKey, ttlSeconds: number): Promise<CacheCounter> {
 		const flat = flattenCacheKey(key);
+		const nowMs = this.#clock.now().getTime();
 		const existing = this.#entries.get(flat);
-		const live = existing && existing.expiresAtMs > this.#clock.now().getTime() ? existing : null;
+		const live = existing && existing.expiresAtMs > nowMs ? existing : null;
 
-		const next = (typeof live?.value === 'number' ? live.value : 0) + 1;
+		const count = (typeof live?.value === 'number' ? live.value : 0) + 1;
+		const expiresAtMs = live?.expiresAtMs ?? nowMs + ttlSeconds * 1000;
 
-		this.#entries.set(flat, {
-			value: next,
-			expiresAtMs: live?.expiresAtMs ?? this.#clock.now().getTime() + ttlSeconds * 1000,
-		});
-		return next;
+		this.#entries.set(flat, { value: count, expiresAtMs });
+
+		// Rounded up: reporting 0 to a caller that still has 400ms of window left
+		// invites a retry that trips the same limit again.
+		return { count, ttlSeconds: Math.ceil((expiresAtMs - nowMs) / 1000) };
 	}
 }

@@ -1,6 +1,6 @@
 {
   "name": "@vpn/ports",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "Interfaces every external dependency of poc-vpn is reached through. Types only, zero runtime dependencies.",
   "license": "UNLICENSED",
   "type": "module",
