@@ -199,3 +199,22 @@ describe('the wire shapes', () => {
 		expect(parsed.success).toBe(true);
 	});
 });
+
+describe('the fleet is nobody grant', () => {
+	// The fleet is ours. A tenant never reads an address or a control url, so
+	// there is nothing here to hand out and no permission naming it.
+	it('names no permission over servers, because there is no server to manage', () => {
+		expect(PERMISSIONS.filter((permission) => permission.startsWith('servers.'))).toEqual([]);
+	});
+
+	it('takes one permission from a role without touching its neighbour in the namespace', () => {
+		const effective = effectivePermissions(
+			'admin',
+			[{ permission: 'users.delete', granted: false }],
+			[],
+		);
+
+		expect(effective).not.toContain('users.delete');
+		expect(effective).toContain('users.read');
+	});
+});
