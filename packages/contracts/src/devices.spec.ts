@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createDeviceRequestSchema, publicKeySchema } from './devices.js';
+import { createDeviceRequestSchema, deviceSchema, publicKeySchema } from './devices.js';
 
 const REAL = 'StZtsGF+hrd7nHOYtH0GhM/759qnBuUbKdVMEeFyLVU=';
 
@@ -36,42 +36,99 @@ describe('publicKeySchema', () => {
 });
 
 describe('createDeviceRequestSchema', () => {
+	const REGION = '3f1c9d2e-8b7a-4c65-9e10-2d4f6a8b0c31';
+
 	it('trims the name, so two devices do not differ by a space', () => {
-		const parsed = createDeviceRequestSchema.parse({ name: '  laptop  ', publicKey: REAL });
+		const parsed = createDeviceRequestSchema.parse({
+			name: '  laptop  ',
+			publicKey: REAL,
+			regionId: REGION,
+		});
 		expect(parsed.name).toBe('laptop');
 	});
 
 	it('rejects a name that is only whitespace', () => {
-		expect(createDeviceRequestSchema.safeParse({ name: '   ', publicKey: REAL }).success).toBe(
-			false,
-		);
+		expect(
+			createDeviceRequestSchema.safeParse({ name: '   ', publicKey: REAL, regionId: REGION })
+				.success,
+		).toBe(false);
 	});
 
 	it('refuses a body carrying a private key field, whatever it is called', () => {
 		const parsed = createDeviceRequestSchema.parse({
 			name: 'laptop',
 			publicKey: REAL,
+			regionId: REGION,
 			privateKey: 'should-not-survive',
 		});
-		expect(parsed).toEqual({ name: 'laptop', publicKey: REAL });
+		expect(parsed).toEqual({ name: 'laptop', publicKey: REAL, regionId: REGION });
 	});
 
 	it('leaves the owner absent when nobody was chosen, which reads as "for me"', () => {
-		const parsed = createDeviceRequestSchema.parse({ name: 'laptop', publicKey: REAL });
+		const parsed = createDeviceRequestSchema.parse({
+			name: 'laptop',
+			publicKey: REAL,
+			regionId: REGION,
+		});
 		expect(parsed.userId).toBeUndefined();
 	});
 
 	it('carries the owner when the key is being assigned to someone else', () => {
 		const userId = '3f2504e0-4f89-11d3-9a0c-0305e82c3301';
-		const parsed = createDeviceRequestSchema.parse({ name: 'laptop', publicKey: REAL, userId });
+		const parsed = createDeviceRequestSchema.parse({
+			name: 'laptop',
+			publicKey: REAL,
+			regionId: REGION,
+			userId,
+		});
 
 		expect(parsed.userId).toBe(userId);
 	});
 
 	it('rejects an owner that is not an id, so a typo never reaches the repository', () => {
 		expect(
-			createDeviceRequestSchema.safeParse({ name: 'laptop', publicKey: REAL, userId: 'ana' })
+			createDeviceRequestSchema.safeParse({
+				name: 'laptop',
+				publicKey: REAL,
+				regionId: REGION,
+				userId: 'ana',
+			}).success,
+		).toBe(false);
+	});
+});
+
+describe('createDeviceRequestSchema, once a fleet exists', () => {
+	const REGION_ID = '3f1c9d2e-8b7a-4c65-9e10-2d4f6a8b0c31';
+
+	it('carries the region, because the person chooses where the traffic leaves', () => {
+		const parsed = createDeviceRequestSchema.parse({
+			name: 'laptop',
+			publicKey: REAL,
+			regionId: REGION_ID,
+		});
+
+		expect(parsed.regionId).toBe(REGION_ID);
+	});
+
+	it('refuses a key with no region, rather than picking a continent for someone', () => {
+		expect(createDeviceRequestSchema.safeParse({ name: 'laptop', publicKey: REAL }).success).toBe(
+			false,
+		);
+	});
+
+	it('rejects a region that is not an id', () => {
+		expect(
+			createDeviceRequestSchema.safeParse({ name: 'laptop', publicKey: REAL, regionId: 'europa' })
 				.success,
 		).toBe(false);
+	});
+});
+
+describe('deviceSchema, once a fleet exists', () => {
+	it('reports the choice and the assignment as two separate facts', () => {
+		const shape = deviceSchema.shape;
+
+		expect(shape).toHaveProperty('regionId');
+		expect(shape).toHaveProperty('exitNodeId');
 	});
 });

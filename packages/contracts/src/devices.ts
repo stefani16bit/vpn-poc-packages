@@ -17,15 +17,21 @@ export const deviceNameSchema = z
 export const createDeviceRequestSchema = z.object({
 	name: deviceNameSchema,
 	publicKey: publicKeySchema,
+	regionId: z.string().uuid('validation.region.required'),
 	userId: z.string().uuid().optional(),
 });
 export type CreateDeviceRequest = z.infer<typeof createDeviceRequestSchema>;
 
+// regionId is what the person chose and exitNodeId is what we assigned. Two
+// fields, never one: collapsing them loses the ability to say which node served
+// a choice, and a device outlives the node it landed on.
 export const deviceSchema = z.object({
 	id: z.string().uuid(),
 	name: deviceNameSchema,
 	publicKey: publicKeySchema,
 	tunnelAddress: z.string(),
+	regionId: z.string().uuid(),
+	exitNodeId: z.string().uuid(),
 	userId: z.string().uuid(),
 	userEmail: z.string(),
 	provisionedAt: z.string().datetime().nullable(),
