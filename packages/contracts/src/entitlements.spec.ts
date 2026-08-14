@@ -82,3 +82,13 @@ describe('entitlementsResponseSchema', () => {
 		expect(parsed.success).toBe(false);
 	});
 });
+
+// The tier says nothing about regions. While the tenant named them a count was
+// the only thing a plan could promise; now that we name them, the honest shape
+// is a list of ours — and with one tier there is nothing yet to choose between.
+describe('the region allowance', () => {
+	it('promises no region allowance at all, in either direction', () => {
+		expect(ENTITLEMENTS.pro).not.toHaveProperty('regions');
+		expect(UNSUBSCRIBED_ENTITLEMENTS).not.toHaveProperty('regions');
+	});
+});
