@@ -1,31 +1,18 @@
 import { z } from 'zod';
 
-export const regionNameSchema = z
-	.string()
-	.trim()
-	.min(1, 'validation.regionName.required')
-	.max(60, 'validation.regionName.tooLong');
-
+// available, and not a count of nodes, because the fleet is ours: how many
+// machines answer in Frankfurt is our inventory, and the form asks one question
+// — can a key be created here right now. The server decides it against the same
+// window it will pick a node by, so the picker cannot offer what the next call
+// refuses.
 export const regionSchema = z.object({
 	id: z.string().uuid(),
-	name: regionNameSchema,
-	nodeCount: z.number().int().nonnegative(),
-	reachableNodeCount: z.number().int().nonnegative(),
-	createdAt: z.string().datetime(),
+	name: z.string(),
+	available: z.boolean(),
 });
 export type Region = z.infer<typeof regionSchema>;
-
-export const createRegionRequestSchema = z.object({
-	name: regionNameSchema,
-});
-export type CreateRegionRequest = z.infer<typeof createRegionRequestSchema>;
 
 export const regionListResponseSchema = z.object({
 	regions: z.array(regionSchema),
 });
 export type RegionListResponse = z.infer<typeof regionListResponseSchema>;
-
-export const regionResponseSchema = z.object({
-	region: regionSchema,
-});
-export type RegionResponse = z.infer<typeof regionResponseSchema>;
