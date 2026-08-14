@@ -88,7 +88,6 @@ export const en: LocaleMessages = {
 		seats: '{{count}} users',
 		devicesPerUser: '{{count}} devices per user',
 		monthlyTrafficGb: '{{count}} GB of traffic per month',
-		regions: 'Regions: {{regions}}',
 		status: {
 			none: 'No subscription',
 			active: 'Active',
@@ -160,7 +159,8 @@ export const en: LocaleMessages = {
 		revoked: 'Device revoked.',
 		regionLabel: 'Region',
 		regionHelp: 'Pick where your traffic leaves from.',
-		regionEmpty: 'No regions available. Ask an administrator to register a server.',
+		regionEmpty: 'No regions are available right now. Try again in a few minutes.',
+		regionUnavailable: 'No server in this region is answering right now. Pick another one.',
 		unsupported:
 			'This browser cannot generate X25519 keys. Update it or use another one to create a device.',
 	},
@@ -248,46 +248,6 @@ export const en: LocaleMessages = {
 			permissions: { manage: 'Edit this page.' },
 		},
 	},
-	servers: {
-		title: 'Servers and regions',
-		link: 'Servers',
-		intro:
-			'Register your exit servers and group them into regions. People using the VPN pick a region; which server serves them is decided here.',
-		regionsTitle: 'Regions',
-		regionsEmpty: 'No regions yet. Create one before registering a server.',
-		regionNameLabel: 'Region name',
-		regionNamePlaceholder: 'São Paulo',
-		regionCreate: 'Create region',
-		regionCreated: 'Region created.',
-		regionNodes: 'Servers: {{count}}',
-		regionRemove: 'Remove region',
-		regionRemoveBlocked: 'Remove the servers in this region first.',
-		regionRemoved: 'Region removed.',
-		regionLimit: 'Your plan allows up to {{count}} regions.',
-		regionLimitReached: 'You have used every region your plan allows.',
-		nodesTitle: 'Servers',
-		nodesEmpty: 'No servers registered. Without one, nobody can connect.',
-		nodeLabelLabel: 'Server name',
-		nodeLabelPlaceholder: 'sp-01',
-		nodeRegionLabel: 'Region',
-		nodeControlUrlLabel: 'Control agent address',
-		nodeControlUrlHelp:
-			'The server is queried now, as it is registered: the public key and endpoint are whatever it answers, never what you type.',
-		nodeCidrLabel: 'Tunnel range',
-		nodeRegister: 'Register server',
-		nodeRegistered: 'Server registered.',
-		nodePublicKey: 'Public key',
-		nodeEndpoint: 'Endpoint',
-		nodeLastSeen: 'Answered {{when}}',
-		nodeNeverSeen: 'Never answered',
-		nodeStale: 'Silent for too long — it is given no new devices.',
-		nodeUnreachable: 'The server did not answer. Check the address and that the agent is up.',
-		nodeUnauthorized: 'The server refused the credential: the token does not match.',
-		nodeRemove: 'Remove server',
-		nodeRemoveBlocked: "Revoke this server's devices before removing it.",
-		nodeRemoved: 'Server removed.',
-		nodeLiveDevices: 'Active devices: {{count}}',
-	},
 	email: {
 		verify_email: {
 			subject: 'Confirm your e-mail',
@@ -364,19 +324,8 @@ export const en: LocaleMessages = {
 		region: {
 			required: 'Pick a region.',
 		},
-		regionName: {
-			required: 'Give this region a name.',
-			tooLong: 'The name can be at most 60 characters.',
-		},
-		exitNodeLabel: {
-			required: 'Give this server a name.',
-			tooLong: 'The name can be at most 60 characters.',
-		},
-		exitNodeControlUrl: {
-			invalid: 'Enter a valid http(s) address.',
-		},
-		cidr: {
-			invalid: 'Enter a range such as 10.13.13.0/24.',
+		exitNodeEndpoint: {
+			invalid: 'Enter an address and a port, such as 203.0.113.10:51820.',
 		},
 		deviceName: {
 			required: 'Give this device a name.',

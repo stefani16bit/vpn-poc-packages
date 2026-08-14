@@ -1,6 +1,6 @@
 {
   "name": "@vpn/i18n",
-  "version": "0.21.0",
+  "version": "0.26.0",
   "description": "Locales, locale negotiation and the translator shared by the API and the web app.",
   "license": "UNLICENSED",
   "type": "module",

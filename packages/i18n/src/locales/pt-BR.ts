@@ -84,7 +84,6 @@ export const ptBR = {
 		seats: '{{count}} usuários',
 		devicesPerUser: '{{count}} dispositivos por usuário',
 		monthlyTrafficGb: '{{count}} GB de tráfego por mês',
-		regions: 'Regiões: {{regions}}',
 		status: {
 			none: 'Sem assinatura',
 			active: 'Ativa',
@@ -157,7 +156,8 @@ export const ptBR = {
 		revoked: 'Dispositivo revogado.',
 		regionLabel: 'Região',
 		regionHelp: 'Escolha por onde o seu tráfego sai.',
-		regionEmpty: 'Nenhuma região disponível. Peça a um administrador para registrar um servidor.',
+		regionEmpty: 'Nenhuma região disponível no momento. Tente de novo em alguns minutos.',
+		regionUnavailable: 'Nenhum servidor desta região está respondendo agora. Escolha outra.',
 		unsupported:
 			'Este navegador não sabe gerar chaves X25519. Atualize-o ou use outro para criar um dispositivo.',
 	},
@@ -245,46 +245,6 @@ export const ptBR = {
 			permissions: { manage: 'Editar esta página.' },
 		},
 	},
-	servers: {
-		title: 'Servidores e regiões',
-		link: 'Servidores',
-		intro:
-			'Registre os seus servidores de saída e agrupe-os em regiões. Quem usa a VPN escolhe a região; qual servidor atende é decidido aqui.',
-		regionsTitle: 'Regiões',
-		regionsEmpty: 'Nenhuma região ainda. Crie uma antes de registrar um servidor.',
-		regionNameLabel: 'Nome da região',
-		regionNamePlaceholder: 'São Paulo',
-		regionCreate: 'Criar região',
-		regionCreated: 'Região criada.',
-		regionNodes: 'Servidores: {{count}}',
-		regionRemove: 'Remover região',
-		regionRemoveBlocked: 'Remova os servidores desta região antes.',
-		regionRemoved: 'Região removida.',
-		regionLimit: 'O seu plano permite até {{count}} regiões.',
-		regionLimitReached: 'Você já usou todas as regiões do seu plano.',
-		nodesTitle: 'Servidores',
-		nodesEmpty: 'Nenhum servidor registrado. Sem um servidor, ninguém consegue conectar.',
-		nodeLabelLabel: 'Nome do servidor',
-		nodeLabelPlaceholder: 'sp-01',
-		nodeRegionLabel: 'Região',
-		nodeControlUrlLabel: 'Endereço do agente de controle',
-		nodeControlUrlHelp:
-			'O servidor é consultado agora, no momento do registro: a chave pública e o endpoint são os que ele responder, nunca os que você digitar.',
-		nodeCidrLabel: 'Faixa do túnel',
-		nodeRegister: 'Registrar servidor',
-		nodeRegistered: 'Servidor registrado.',
-		nodePublicKey: 'Chave pública',
-		nodeEndpoint: 'Endpoint',
-		nodeLastSeen: 'Respondeu {{when}}',
-		nodeNeverSeen: 'Nunca respondeu',
-		nodeStale: 'Sem resposta há tempo demais — não recebe dispositivos novos.',
-		nodeUnreachable: 'O servidor não respondeu. Confira o endereço e se o agente está no ar.',
-		nodeUnauthorized: 'O servidor recusou a credencial: o token não confere.',
-		nodeRemove: 'Remover servidor',
-		nodeRemoveBlocked: 'Revogue os dispositivos deste servidor antes de removê-lo.',
-		nodeRemoved: 'Servidor removido.',
-		nodeLiveDevices: 'Dispositivos ativos: {{count}}',
-	},
 	email: {
 		verify_email: {
 			subject: 'Confirme seu e-mail',
@@ -361,19 +321,8 @@ export const ptBR = {
 		region: {
 			required: 'Escolha uma região.',
 		},
-		regionName: {
-			required: 'Dê um nome a esta região.',
-			tooLong: 'O nome pode ter no máximo 60 caracteres.',
-		},
-		exitNodeLabel: {
-			required: 'Dê um nome a este servidor.',
-			tooLong: 'O nome pode ter no máximo 60 caracteres.',
-		},
-		exitNodeControlUrl: {
-			invalid: 'Informe um endereço http(s) válido.',
-		},
-		cidr: {
-			invalid: 'Informe uma faixa como 10.13.13.0/24.',
+		exitNodeEndpoint: {
+			invalid: 'Informe endereço e porta, como 203.0.113.10:51820.',
 		},
 		deviceName: {
 			required: 'Dê um nome a este dispositivo.',
