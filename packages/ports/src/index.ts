@@ -36,3 +36,6 @@ export { JOB_QUEUE } from './IJobQueue.js';
 
 export type { IExitNode, PeerSpec, ExitNodeDescription } from './IExitNode.js';
 export { EXIT_NODE } from './IExitNode.js';
+
+export type { ISecretStore } from './ISecretStore.js';
+export { SECRET_STORE } from './ISecretStore.js';

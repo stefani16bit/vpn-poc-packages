@@ -19,3 +19,6 @@ export type { JobQueueHarness } from './job-queue.contract.js';
 
 export { describeExitNodeContract } from './exit-node.contract.js';
 export type { ExitNodeHarness } from './exit-node.contract.js';
+
+export { describeSecretStoreContract } from './secret-store.contract.js';
+export type { SecretStoreHarness } from './secret-store.contract.js';

@@ -6,6 +6,7 @@ import {
 	describeEmailSenderContract,
 	describeExitNodeContract,
 	describeObjectStorageContract,
+	describeSecretStoreContract,
 	describePasswordHasherContract,
 	describeJobQueueContract,
 	describeSmsSenderContract,
@@ -17,6 +18,7 @@ import { MemoryCacheStore, flattenCacheKey } from './MemoryCacheStore.js';
 import { MemoryEmailSender } from './MemoryEmailSender.js';
 import { MemoryExitNode } from './MemoryExitNode.js';
 import { MemoryObjectStorage } from './MemoryObjectStorage.js';
+import { MemorySecretStore } from './MemorySecretStore.js';
 import { MemoryJobQueue } from './MemoryJobQueue.js';
 import { MemorySmsSender } from './MemorySmsSender.js';
 
@@ -69,6 +71,16 @@ describeJobQueueContract('MemoryJobQueue', () => {
 });
 
 describeExitNodeContract('MemoryExitNode', () => ({ node: new MemoryExitNode() }));
+
+describeSecretStoreContract('MemorySecretStore', () => {
+	const store = new MemorySecretStore();
+
+	return {
+		store,
+		seed: (ref, value) => store.seed(ref, value),
+		forget: (ref) => store.forget(ref),
+	};
+});
 
 describe('flattenCacheKey', () => {
 	it('renders a null owner as an explicit segment', () => {
