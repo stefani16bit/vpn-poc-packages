@@ -8,6 +8,20 @@ export const CADENCES = ['monthly', 'yearly'] as const;
 export const cadenceSchema = z.enum(CADENCES);
 export type Cadence = z.infer<typeof cadenceSchema>;
 
+export const planPriceSchema = z.object({
+	amountCents: z.number().int().positive(),
+	// Lowercase ISO 4217, the form the provider stores and returns.
+	currency: z.string().regex(/^[a-z]{3}$/),
+});
+export type PlanPrice = z.infer<typeof planPriceSchema>;
+
+export const PLAN_PRICES: Record<TierId, Record<Cadence, PlanPrice>> = {
+	pro: {
+		monthly: { amountCents: 2990, currency: 'brl' },
+		yearly: { amountCents: 29900, currency: 'brl' },
+	},
+};
+
 export const createCheckoutRequestSchema = z.object({
 	tier: tierIdSchema,
 	cadence: cadenceSchema,
