@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
 import {
-	describeBillingProviderContract,
+	describeBillingCheckoutContract,
+	describeBillingInvoiceArchiveContract,
+	describeBillingLifecycleContract,
+	describeBillingWebhookContract,
 	describeCacheStoreContract,
 	describeEmailSenderContract,
 	describeExitNodeContract,
@@ -41,12 +44,28 @@ describeSmsSenderContract('MemorySmsSender', () => {
 
 describeObjectStorageContract('MemoryObjectStorage', () => new MemoryObjectStorage());
 
-describeBillingProviderContract('MemoryBillingProvider', () => {
-	const provider = new MemoryBillingProvider(new FixedClock());
+// All four, because the fake is the implementation with nothing it cannot
+// answer. Which of them a real adapter faces is the interesting question, and
+// splitting the suite is what makes it askable one block at a time.
+function memoryBilling(): MemoryBillingProvider {
+	return new MemoryBillingProvider(new FixedClock());
+}
+
+describeBillingCheckoutContract('MemoryBillingProvider', () => ({ provider: memoryBilling() }));
+
+describeBillingLifecycleContract('MemoryBillingProvider', () => {
+	const provider = memoryBilling();
 	return {
 		provider,
 		activeSubscription: (accountId) =>
 			provider.seedSubscription(`sub_${accountId}`, accountId).externalId,
+	};
+});
+
+describeBillingWebhookContract('MemoryBillingProvider', () => {
+	const provider = memoryBilling();
+	return {
+		provider,
 		activationWebhook: (accountId) =>
 			provider.emit('subscription_activated', accountId, {
 				subscription: provider.seedSubscription(`sub_${accountId}`, accountId),
@@ -60,6 +79,13 @@ describeBillingProviderContract('MemoryBillingProvider', () => {
 			provider.emit('payment_failed', accountId, {
 				invoice: provider.seedInvoice(`in_${accountId}_failed`, accountId, 'failed'),
 			}),
+	};
+});
+
+describeBillingInvoiceArchiveContract('MemoryBillingProvider', () => {
+	const provider = memoryBilling();
+	return {
+		provider,
 		invoicedExternalId: (accountId) =>
 			provider.seedInvoice(`in_${accountId}_paid`, accountId).externalId,
 	};

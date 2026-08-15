@@ -11,8 +11,19 @@ export type { SmsSenderHarness, SentSms } from './sms-sender.contract.js';
 
 export { describeObjectStorageContract } from './object-storage.contract.js';
 
-export { describeBillingProviderContract } from './billing-provider.contract.js';
-export type { BillingProviderHarness, SignedWebhook } from './billing-provider.contract.js';
+export {
+	describeBillingCheckoutContract,
+	describeBillingLifecycleContract,
+	describeBillingWebhookContract,
+	describeBillingInvoiceArchiveContract,
+} from './billing-provider.contract.js';
+export type {
+	BillingCheckoutHarness,
+	BillingLifecycleHarness,
+	BillingWebhookHarness,
+	BillingInvoiceArchiveHarness,
+	SignedWebhook,
+} from './billing-provider.contract.js';
 
 export { describeJobQueueContract } from './job-queue.contract.js';
 export type { JobQueueHarness } from './job-queue.contract.js';
