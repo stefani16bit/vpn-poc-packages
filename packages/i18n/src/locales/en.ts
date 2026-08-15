@@ -77,6 +77,8 @@ export const en: LocaleMessages = {
 		periodEndUnknown: 'the end of the current period',
 		subscribeMonthly: 'Subscribe monthly',
 		subscribeYearly: 'Subscribe yearly',
+		intendedMonthly: 'You chose the monthly plan before creating your account.',
+		intendedYearly: 'You chose the yearly plan before creating your account.',
 		cancel: 'Cancel subscription',
 		cancelConfirmTitle: 'Cancel your subscription?',
 		cancelConfirmBody:
@@ -123,6 +125,33 @@ export const en: LocaleMessages = {
 		checkoutCancel: {
 			title: 'Nothing was charged',
 			body: 'You left the checkout before finishing. Your subscription has not changed.',
+		},
+	},
+
+	marketing: {
+		hero: {
+			title: 'A WireGuard tunnel your company runs',
+			body: 'Generate a key in the browser, hand the file to whoever needs it, and see every device the company has in one list.',
+			cta: 'Create an account',
+		},
+		value: {
+			keysTitle: 'The private key never leaves the browser',
+			keysBody:
+				'Keys are generated on the machine that will use them. We only ever store the public half, and a lost configuration is replaced, not recovered.',
+			companyTitle: 'One company, many people',
+			companyBody:
+				'Users, devices and invoices belong to the company that pays. Roles set the defaults, and exceptions per person handle the rest.',
+			regionsTitle: 'Pick where your traffic leaves',
+			regionsBody:
+				'Choose a region when you create a key. Which machine serves it is our problem, and swapping it does not touch your configuration.',
+		},
+		pricing: {
+			title: 'One plan',
+			perMonth: '{{price}}/month',
+			perYear: '{{price}}/year',
+			yearlyNote: 'Charged once a year.',
+			startMonthly: 'Start monthly',
+			startYearly: 'Start yearly',
 		},
 	},
 

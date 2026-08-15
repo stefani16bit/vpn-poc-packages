@@ -74,6 +74,8 @@ export const ptBR = {
 		periodEndUnknown: 'o fim do período vigente',
 		subscribeMonthly: 'Assinar mensal',
 		subscribeYearly: 'Assinar anual',
+		intendedMonthly: 'Você escolheu o plano mensal antes de criar a conta.',
+		intendedYearly: 'Você escolheu o plano anual antes de criar a conta.',
 		cancel: 'Cancelar assinatura',
 		cancelConfirmTitle: 'Cancelar sua assinatura?',
 		cancelConfirmBody: 'O acesso continua até {{date}}. Depois disso a conta perde o plano Pro.',
@@ -120,6 +122,33 @@ export const ptBR = {
 		checkoutCancel: {
 			title: 'Nada foi cobrado',
 			body: 'Você saiu do checkout antes de concluir. Sua assinatura não mudou.',
+		},
+	},
+
+	marketing: {
+		hero: {
+			title: 'Um túnel WireGuard que a sua empresa opera',
+			body: 'Gere uma chave no navegador, entregue o arquivo a quem precisa e veja todos os dispositivos da empresa numa lista só.',
+			cta: 'Criar conta',
+		},
+		value: {
+			keysTitle: 'A chave privada nunca sai do navegador',
+			keysBody:
+				'As chaves são geradas na máquina que vai usá-las. Guardamos apenas a metade pública, e uma configuração perdida é substituída, não recuperada.',
+			companyTitle: 'Uma empresa, várias pessoas',
+			companyBody:
+				'Usuários, dispositivos e faturas pertencem à empresa que paga. O papel define o padrão, e as exceções por pessoa resolvem o resto.',
+			regionsTitle: 'Escolha por onde seu tráfego sai',
+			regionsBody:
+				'Escolha a região ao criar uma chave. Qual máquina atende é problema nosso, e trocá-la não mexe na sua configuração.',
+		},
+		pricing: {
+			title: 'Um plano',
+			perMonth: '{{price}}/mês',
+			perYear: '{{price}}/ano',
+			yearlyNote: 'Cobrado uma vez por ano.',
+			startMonthly: 'Começar mensal',
+			startYearly: 'Começar anual',
 		},
 	},
 

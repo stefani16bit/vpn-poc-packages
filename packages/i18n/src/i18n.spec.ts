@@ -157,6 +157,7 @@ describe('locale message shape', () => {
 				'email',
 				'errors',
 				'keys',
+				'marketing',
 				'permissions',
 				'sms',
 				'users',
