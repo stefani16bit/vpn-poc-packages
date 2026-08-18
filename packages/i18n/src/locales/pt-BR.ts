@@ -130,6 +130,12 @@ export const ptBR = {
 			title: 'Um túnel WireGuard que a sua empresa opera',
 			body: 'Gere uma chave no navegador, entregue o arquivo a quem precisa e veja todos os dispositivos da empresa numa lista só.',
 			cta: 'Criar conta',
+			eyebrow: 'Infraestrutura de VPN gerenciada',
+			secondaryCta: 'Ver preços',
+		},
+		nav: {
+			product: 'Produto',
+			pricing: 'Preços',
 		},
 		value: {
 			keysTitle: 'A chave privada nunca sai do navegador',
@@ -144,11 +150,19 @@ export const ptBR = {
 		},
 		pricing: {
 			title: 'Um plano',
+			subtitle: 'Todo mundo, todo dispositivo, um preço só. Cancele quando quiser.',
+			monthlyLabel: 'Mensal',
+			yearlyLabel: 'Anual',
+			bestValue: 'Melhor valor',
+			monthsFree: '{{count}} meses grátis',
 			perMonth: '{{price}}/mês',
 			perYear: '{{price}}/ano',
 			yearlyNote: 'Cobrado uma vez por ano.',
 			startMonthly: 'Começar mensal',
 			startYearly: 'Começar anual',
+		},
+		footer: {
+			rights: '© {{year}} {{name}}',
 		},
 	},
 

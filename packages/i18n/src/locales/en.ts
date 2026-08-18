@@ -133,6 +133,12 @@ export const en: LocaleMessages = {
 			title: 'A WireGuard tunnel your company runs',
 			body: 'Generate a key in the browser, hand the file to whoever needs it, and see every device the company has in one list.',
 			cta: 'Create an account',
+			eyebrow: 'Managed VPN infrastructure',
+			secondaryCta: 'See pricing',
+		},
+		nav: {
+			product: 'Product',
+			pricing: 'Pricing',
 		},
 		value: {
 			keysTitle: 'The private key never leaves the browser',
@@ -147,11 +153,19 @@ export const en: LocaleMessages = {
 		},
 		pricing: {
 			title: 'One plan',
+			subtitle: 'Every user, every device, one price. Cancel whenever.',
+			monthlyLabel: 'Monthly',
+			yearlyLabel: 'Yearly',
+			bestValue: 'Best value',
+			monthsFree: '{{count}} months free',
 			perMonth: '{{price}}/month',
 			perYear: '{{price}}/year',
 			yearlyNote: 'Charged once a year.',
 			startMonthly: 'Start monthly',
 			startYearly: 'Start yearly',
+		},
+		footer: {
+			rights: '© {{year}} {{name}}',
 		},
 	},
 
