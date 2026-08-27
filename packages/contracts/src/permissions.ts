@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { roleSchema, type UserRole } from './auth.js';
+import { pageMetaSchema } from './pagination.js';
 
 export const PERMISSIONS = [
 	'billing.manage',
@@ -83,19 +84,31 @@ export const roleGrantsSchema = z.object({
 });
 export type RoleGrants = z.infer<typeof roleGrantsSchema>;
 
+// `effective` next to `grants` because a screen handed only the departures shows
+// nothing at all until the first exception exists. DEC-113.
 export const userGrantsSchema = z.object({
 	userId: z.string().uuid(),
 	email: z.string().email(),
 	role: roleSchema,
 	grants: z.array(permissionGrantSchema),
+	effective: z.array(permissionSchema),
 });
 export type UserGrants = z.infer<typeof userGrantsSchema>;
 
 export const roleGrantsResponseSchema = z.object({
 	roles: z.array(roleGrantsSchema),
-	users: z.array(userGrantsSchema),
 });
 export type RoleGrantsResponse = z.infer<typeof roleGrantsResponseSchema>;
+
+export const userGrantsResponseSchema = z.object({
+	user: userGrantsSchema,
+});
+export type UserGrantsResponse = z.infer<typeof userGrantsResponseSchema>;
+
+export const userGrantsPageResponseSchema = pageMetaSchema.extend({
+	users: z.array(userGrantsSchema),
+});
+export type UserGrantsPageResponse = z.infer<typeof userGrantsPageResponseSchema>;
 
 export const updateGrantsRequestSchema = z.object({
 	grants: z.array(permissionGrantSchema),

@@ -29,6 +29,8 @@ export const accountUserSchema = z.object({
 });
 export type AccountUser = z.infer<typeof accountUserSchema>;
 
+export const userSearchSchema = z.string().trim().max(320);
+
 export const userListResponseSchema = z.object({
 	users: z.array(accountUserSchema),
 });

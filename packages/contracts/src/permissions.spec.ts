@@ -10,6 +10,9 @@ import {
 	permissionSchema,
 	permissionsResponseSchema,
 	roleGrantsResponseSchema,
+	userGrantsPageResponseSchema,
+	userGrantsResponseSchema,
+	userGrantsSchema,
 } from './permissions.js';
 
 describe('PERMISSIONS', () => {
@@ -186,14 +189,51 @@ describe('the wire shapes', () => {
 					effective: [],
 				},
 			],
-			users: [
-				{
-					userId: '00000000-0000-0000-0000-000000000000',
-					email: 'ana@example.com',
-					role: 'member',
-					grants: [{ permission: 'devices.create', granted: true }],
-				},
-			],
+		});
+
+		expect(parsed.success).toBe(true);
+	});
+
+	it('leaves the people out of the role overview, because that list has no ceiling', () => {
+		const parsed = roleGrantsResponseSchema.parse({
+			roles: [],
+			users: [{ userId: '00000000-0000-0000-0000-000000000000' }],
+		});
+
+		expect(parsed).toEqual({ roles: [] });
+	});
+
+	it('describes a person by what they may do, and not only by where they diverge', () => {
+		const parsed = userGrantsResponseSchema.safeParse({
+			user: {
+				userId: '00000000-0000-0000-0000-000000000000',
+				email: 'ana@example.com',
+				role: 'member',
+				grants: [],
+				effective: ['devices.create'],
+			},
+		});
+
+		expect(parsed.success).toBe(true);
+	});
+
+	it('refuses a person described only by their exceptions', () => {
+		const parsed = userGrantsSchema.safeParse({
+			userId: '00000000-0000-0000-0000-000000000000',
+			email: 'ana@example.com',
+			role: 'member',
+			grants: [],
+		});
+
+		expect(parsed.success).toBe(false);
+	});
+
+	it('pages the people, and says how many there are so the numbers can be drawn', () => {
+		const parsed = userGrantsPageResponseSchema.safeParse({
+			page: 1,
+			perPage: 6,
+			total: 7,
+			users: [],
 		});
 
 		expect(parsed.success).toBe(true);

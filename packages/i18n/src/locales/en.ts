@@ -14,6 +14,11 @@ export const en: LocaleMessages = {
 		themeLight: 'Light',
 		skipToContent: 'Skip to content',
 		retryInMinutes: 'Too many attempts. Try again in {{minutes}} min.',
+		pagination: 'Pagination',
+		previousPage: 'Previous page',
+		nextPage: 'Next page',
+		pageNumber: 'Page {{page}}',
+		showingRange: 'Showing {{from}}–{{to}} of {{total}}',
 	},
 
 	auth: {
@@ -259,13 +264,18 @@ export const en: LocaleMessages = {
 		intro:
 			'What each role may do in this company. The defaults come from the product; anything you change here applies to this company only.',
 		byRole: 'By role',
-		byPerson: 'By person',
-		byPersonIntro:
-			'Exceptions for one person, on top of their role. Use it when somebody needs more — or less — than their colleagues.',
-		byPersonEmpty: 'Nobody has an exception. Everyone follows their role.',
-		changed: 'Default changed.',
-		reset: 'Back to default',
-		resetAll: 'Reset everything to default',
+		people: 'People',
+		peopleIntro:
+			'Open a person to see everything they may do here, and what this company changed for them.',
+		peopleEmpty: 'Nobody here matches that e-mail.',
+		peopleNone: 'Nobody else in this company yet.',
+		searchLabel: 'Search by e-mail',
+		searchPlaceholder: 'name@company.com',
+		exceptionCount: 'Exceptions: {{count}}',
+		personIntro: 'What this person may do here. The dot marks what departs from their role.',
+		allowed: 'Allowed',
+		exception: 'Exception to the role',
+		backToPeople: 'Back to permissions',
 		modified: 'Differs from the default',
 		name: {
 			billing: { manage: 'Manage the subscription' },

@@ -4,6 +4,7 @@ export * from './auth.js';
 export * from './billing.js';
 export * from './entitlements.js';
 export * from './devices.js';
+export * from './pagination.js';
 export * from './users.js';
 export * from './permissions.js';
 export * from './regions.js';

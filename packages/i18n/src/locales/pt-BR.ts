@@ -12,6 +12,11 @@ export const ptBR = {
 		themeLight: 'Claro',
 		skipToContent: 'Ir para o conteúdo',
 		retryInMinutes: 'Muitas tentativas. Tente de novo em {{minutes}} min.',
+		pagination: 'Paginação',
+		previousPage: 'Página anterior',
+		nextPage: 'Próxima página',
+		pageNumber: 'Página {{page}}',
+		showingRange: 'Mostrando {{from}}–{{to}} de {{total}}',
 	},
 
 	auth: {
@@ -256,13 +261,18 @@ export const ptBR = {
 		intro:
 			'O que cada função pode fazer nesta empresa. O padrão vem do produto; o que você mudar aqui vale só para esta empresa.',
 		byRole: 'Por função',
-		byPerson: 'Por pessoa',
-		byPersonIntro:
-			'Exceções para uma pessoa específica, por cima da função dela. Use quando alguém precisa de mais — ou de menos — que os colegas.',
-		byPersonEmpty: 'Ninguém tem exceção. Todos seguem a função.',
-		changed: 'Padrão alterado.',
-		reset: 'Voltar ao padrão',
-		resetAll: 'Voltar tudo ao padrão',
+		people: 'Pessoas',
+		peopleIntro:
+			'Abra uma pessoa para ver tudo o que ela pode fazer aqui, e o que esta empresa mudou para ela.',
+		peopleEmpty: 'Ninguém com esse e-mail.',
+		peopleNone: 'Ainda não há mais ninguém nesta empresa.',
+		searchLabel: 'Buscar por e-mail',
+		searchPlaceholder: 'nome@empresa.com',
+		exceptionCount: 'Exceções: {{count}}',
+		personIntro: 'O que esta pessoa pode fazer aqui. O ponto marca o que foge da função dela.',
+		allowed: 'Pode',
+		exception: 'Exceção à função',
+		backToPeople: 'Voltar às permissões',
 		modified: 'Diferente do padrão',
 		name: {
 			billing: { manage: 'Gerir a assinatura' },
