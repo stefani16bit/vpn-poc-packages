@@ -10,6 +10,7 @@ export { negotiateLocale, isSupportedLocale } from './negotiate.js';
 
 export {
 	getTranslator,
+	regionName,
 	translate,
 	type Translator,
 	type TranslationKey,

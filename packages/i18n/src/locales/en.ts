@@ -208,6 +208,16 @@ export const en: LocaleMessages = {
 			'This browser cannot generate X25519 keys. Update it or use another one to create a device.',
 	},
 
+	regions: {
+		'sa-east-1': 'South America (São Paulo)',
+		'us-east-1': 'US East (N. Virginia)',
+		'eu-central-1': 'Europe (Frankfurt)',
+		'ap-northeast-1': 'Asia Pacific (Tokyo)',
+		'af-south-1': 'Africa (Cape Town)',
+		'ru-central-1': 'Russia (Moscow)',
+		'ua-central-1': 'Ukraine (Kyiv)',
+	},
+
 	users: {
 		title: 'Users',
 		link: 'Users',

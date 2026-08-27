@@ -205,6 +205,16 @@ export const ptBR = {
 			'Este navegador não sabe gerar chaves X25519. Atualize-o ou use outro para criar um dispositivo.',
 	},
 
+	regions: {
+		'sa-east-1': 'América do Sul (São Paulo)',
+		'us-east-1': 'Estados Unidos (Norte da Virgínia)',
+		'eu-central-1': 'Europa (Frankfurt)',
+		'ap-northeast-1': 'Ásia-Pacífico (Tóquio)',
+		'af-south-1': 'África (Cidade do Cabo)',
+		'ru-central-1': 'Rússia (Moscou)',
+		'ua-central-1': 'Ucrânia (Kiev)',
+	},
+
 	users: {
 		title: 'Usuários',
 		link: 'Usuários',

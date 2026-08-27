@@ -4,7 +4,7 @@ import { API_ERROR_CODES, CLIENT_ERROR_CODES } from '@vpn/contracts';
 
 import { FALLBACK_LOCALE, RESOURCES, SUPPORTED_LOCALES, type LocaleMessages } from './locales.js';
 import { isSupportedLocale, negotiateLocale } from './negotiate.js';
-import { getTranslator } from './translator.js';
+import { getTranslator, regionName } from './translator.js';
 
 function flatten(value: unknown, prefix = ''): string[] {
 	if (typeof value === 'string') return [prefix];
@@ -159,10 +159,28 @@ describe('locale message shape', () => {
 				'keys',
 				'marketing',
 				'permissions',
+				'regions',
 				'sms',
 				'users',
 				'validation',
 			].sort(),
 		);
+	});
+});
+
+describe('regionName', () => {
+	it('translates a code the fleet already carries', () => {
+		expect(regionName('pt-BR', 'ru-central-1', 'Russia (Moscow)')).toBe('Rússia (Moscou)');
+		expect(regionName('en', 'ru-central-1', 'Russia (Moscow)')).toBe('Russia (Moscow)');
+	});
+
+	it('falls back to the name the row carries when the code is newer than this package', () => {
+		expect(regionName('pt-BR', 'me-south-1', 'Middle East (Bahrain)')).toBe(
+			'Middle East (Bahrain)',
+		);
+	});
+
+	it('never shows the code itself, which is the failure the fallback exists for', () => {
+		expect(regionName('pt-BR', 'me-south-1', 'Middle East (Bahrain)')).not.toBe('me-south-1');
 	});
 });

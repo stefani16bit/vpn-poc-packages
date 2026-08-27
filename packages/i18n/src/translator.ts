@@ -40,6 +40,23 @@ export function translate(
 	return getTranslator(locale)(key, vars);
 }
 
+// A region code is data — it arrives on a row, not in this source — so it cannot
+// be a TranslationKey and cannot be checked at compile time. A code this package
+// has never heard of falls back to the name the row carries, because the fleet
+// grows by migration and nothing makes the front deploy alongside it. DEC-111.
+export function regionName(locale: SupportedLocale, code: string, fallback: string): string {
+	return (
+		lookupRegion(RESOURCES[locale], code) ??
+		lookupRegion(RESOURCES[FALLBACK_LOCALE], code) ??
+		fallback
+	);
+}
+
+function lookupRegion(messages: LocaleMessages, code: string): string | undefined {
+	const names: Readonly<Record<string, string>> = messages.regions;
+	return names[code];
+}
+
 function lookup(messages: LocaleMessages, key: string): string | null {
 	let current: unknown = messages;
 
